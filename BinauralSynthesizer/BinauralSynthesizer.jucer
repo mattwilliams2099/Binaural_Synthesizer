@@ -20,6 +20,10 @@
       <FILE id="vSBZi9" name="ILD.h" compile="0" resource="0" file="Source/ILD.h"/>
       <FILE id="BfLmgb" name="ITD.cpp" compile="1" resource="0" file="Source/ITD.cpp"/>
       <FILE id="cx8oyK" name="ITD.h" compile="0" resource="0" file="Source/ITD.h"/>
+      <FILE id="T3sXsP" name="DelayLine.cpp" compile="1" resource="0" file="Source/DelayLine.cpp"/>
+      <FILE id="K1kxAM" name="DelayLine.h" compile="0" resource="0" file="Source/DelayLine.h"/>
+      <FILE id="NdiZMG" name="Filter.cpp" compile="1" resource="0" file="Source/Filter.cpp"/>
+      <FILE id="cOG41E" name="Filter.h" compile="0" resource="0" file="Source/Filter.h"/>
     </GROUP>
   </MAINGROUP>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
