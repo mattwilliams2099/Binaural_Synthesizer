@@ -35,6 +35,8 @@ void ILDClass::setAzimuth(int newAzimuth)
 
 
 
+
+
 void ILDClass::loadAmplitudeDatabase()
 {
     std::ifstream subAmplitudesLeftFile("C:/Users/Matthew Williams/Documents/JUCE Plugin Dev/BinauralSynthesizer/BinauralSynthesizer/Source/subBandAmplitudes_left.txt");

@@ -16,9 +16,6 @@ class ILDClass
 {
 private:
     FilterClass bandPassFilter[4];
-    float azimuth;
-    float elevation;
-    float distance[2];
     void loadAmplitudeDatabase();
     float amplitudes[2304][4][2];
     int amplitudeIndex;
@@ -26,8 +23,5 @@ private:
 public:
     ILDClass(float samplerate = 44100.0f);
     float process(float sample, int channel);
-    void setAzimuth(int newAzimuth);
-    void setElevation();
-    void setDistance();
-
+    void setIndex(int newIndex) { amplitudeIndex = newIndex; }
 };

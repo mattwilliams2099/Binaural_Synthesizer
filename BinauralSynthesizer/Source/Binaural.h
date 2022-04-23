@@ -11,6 +11,8 @@
 #pragma once
 #include "ILD.h"
 #include "ITD.h"
+
+
 class BinauralClass
 {
 private:
@@ -20,10 +22,11 @@ private:
     float elevation;
     float distance;
     float sampleRate;
+    int getCoordinates();
 public:
-    BinauralClass(float samplerate = 48000.0f) : sampleRate(samplerate) {};
+    BinauralClass(float samplerate = 48000.0f);
     float process(float sample, int channel);
     void setAzimuth(int newAzimuth);
-    void setElevation(float newElevation);
+    void setElevation(int newElevation);
     void setDistance(float newDistance);
 };
