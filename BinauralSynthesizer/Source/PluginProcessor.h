@@ -57,5 +57,14 @@ public:
 private:
     //==============================================================================
     BinauralClass binaural;
+    juce::AudioProcessorValueTreeState parameters;
+    std::atomic<float>* azimuthParameter = nullptr;
+    std::atomic<float>* elevationParameter = nullptr;
+    std::atomic<float>* distanceParameter = nullptr;
+
+
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (BinauralSynthesizerAudioProcessor)
+
+
 };

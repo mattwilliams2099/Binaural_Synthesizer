@@ -19,9 +19,17 @@ BinauralSynthesizerAudioProcessor::BinauralSynthesizerAudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       )
+                       ), parameters(*this, nullptr, juce::Identifier("BinauralValueTree"),
+                           {
+                                std::make_unique<juce::AudioParameterInt>("AZ",     "Azimuth",  -180,      180,          0),
+                                std::make_unique<juce::AudioParameterInt>("EL",      "Elevation",   0,   32,       15),
+                                std::make_unique<juce::AudioParameterFloat>("DIST",    "Distance", 0.125f, 8.0f,       1.0f) 
+                           })
 #endif
 {
+    azimuthParameter = parameters.getRawParameterValue("AZ");
+    elevationParameter = parameters.getRawParameterValue("EL");
+    distanceParameter = parameters.getRawParameterValue("DIST");
 }
 
 BinauralSynthesizerAudioProcessor::~BinauralSynthesizerAudioProcessor()
@@ -95,6 +103,10 @@ void BinauralSynthesizerAudioProcessor::prepareToPlay (double sampleRate, int sa
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
+    binaural.setAzimuth(*azimuthParameter);
+    binaural.setElevation(*elevationParameter);
+    binaural.setDistance(*distanceParameter);
+
 }
 
 void BinauralSynthesizerAudioProcessor::releaseResources()
@@ -150,6 +162,14 @@ void BinauralSynthesizerAudioProcessor::processBlock (juce::AudioBuffer<float>& 
     // the samples and the outer loop is handling the channels.
     // Alternatively, you can process the samples with the channels
     // interleaved by keeping the same state.
+
+    binaural.setAzimuth(*azimuthParameter);
+    binaural.setElevation(*elevationParameter);
+    binaural.setDistance(*distanceParameter);
+
+
+
+
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
         auto* channelData = buffer.getWritePointer (channel);
@@ -169,7 +189,7 @@ bool BinauralSynthesizerAudioProcessor::hasEditor() const
 
 juce::AudioProcessorEditor* BinauralSynthesizerAudioProcessor::createEditor()
 {
-    return new BinauralSynthesizerAudioProcessorEditor (*this);
+    return new BinauralSynthesizerAudioProcessorEditor (*this, parameters);
 }
 
 //==============================================================================

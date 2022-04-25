@@ -14,10 +14,12 @@
 //==============================================================================
 /**
 */
+
+typedef juce::AudioProcessorValueTreeState::SliderAttachment SliderAttachment;
 class BinauralSynthesizerAudioProcessorEditor  : public juce::AudioProcessorEditor
 {
 public:
-    BinauralSynthesizerAudioProcessorEditor (BinauralSynthesizerAudioProcessor&);
+    BinauralSynthesizerAudioProcessorEditor (BinauralSynthesizerAudioProcessor&, juce::AudioProcessorValueTreeState&);
     ~BinauralSynthesizerAudioProcessorEditor() override;
 
     //==============================================================================
@@ -28,6 +30,16 @@ private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     BinauralSynthesizerAudioProcessor& audioProcessor;
+    juce::AudioProcessorValueTreeState& valueTreeState;
+
+    juce::Slider elevationSlider;
+    juce::Slider azimuthSlider;
+    juce::Slider distanceSlider;
+    std::unique_ptr<SliderAttachment> elevationSliderAttachment;
+    std::unique_ptr<SliderAttachment> azimuthSliderAttachment;
+    std::unique_ptr<SliderAttachment> distanceSliderAttachment;
+
+    void setSlider(juce::Slider& slider, juce::Colour colour, juce::Slider::SliderStyle style);
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (BinauralSynthesizerAudioProcessorEditor)
 };

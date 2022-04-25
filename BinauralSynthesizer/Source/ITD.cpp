@@ -18,7 +18,7 @@ ITDClass::ITDClass(float samplerate) : sampleRate(samplerate)
 
 float ITDClass::process(float sample, int channel)
 {
-    return delayLine.delayProcess(sample, channel) * pow((1 / distance), 2);
+    return delayLine.delayProcess(sample, channel) * distanceCoefficient[channel];
 }
 /*
 void ITDClass::setDelay(float az, float el, float dist)
