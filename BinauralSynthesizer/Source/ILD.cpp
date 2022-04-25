@@ -13,6 +13,10 @@
 ILDClass::ILDClass(float samplerate) : sampleRate(samplerate)
 {
     loadAmplitudeDatabase();
+    bandPassFilter[0].setBandPassCo(3.0f, 0.2f);
+    bandPassFilter[1].setBandPassCo(700.0f, 1.0f);
+    bandPassFilter[2].setBandPassCo(4000.0f, 2.0f);
+    bandPassFilter[3].setBandPassCo(13500.0f, 2.0f);
 }
 
 
@@ -22,14 +26,15 @@ float ILDClass::process(float sample, int channel)
     for (int i = 0; i < 4; i++)
     {
         output += (bandPassFilter[i].filterProcess(sample, channel) * amplitudes[amplitudeIndex][i][channel]);
+        //output += (sample * amplitudes[amplitudeIndex][i][1]);
+        //output += (bandPassFilter[i].filterProcess(sample, channel)); 
+
+
     }
     return(output);
 }
 
-void ILDClass::setAzimuth(int newAzimuth)
-{
 
-}
 
 
 

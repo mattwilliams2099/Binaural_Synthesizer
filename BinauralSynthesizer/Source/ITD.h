@@ -19,7 +19,7 @@ class ITDClass
 private: 
     DelayLineClass delayLine;
     void setDelay();
-    float distance;
+    float distance = 1;
     float distanceCoefficient[2];
     float sampleRate;
     float samplePeriod;

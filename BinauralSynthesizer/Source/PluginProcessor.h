@@ -9,7 +9,7 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "BinauralSynth.h"
+#include "Binaural.h"
 
 //==============================================================================
 /**
@@ -56,5 +56,6 @@ public:
 
 private:
     //==============================================================================
+    BinauralClass binaural;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (BinauralSynthesizerAudioProcessor)
 };

@@ -153,7 +153,10 @@ void BinauralSynthesizerAudioProcessor::processBlock (juce::AudioBuffer<float>& 
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
         auto* channelData = buffer.getWritePointer (channel);
-
+        for (int sample = 0; sample < buffer.getNumSamples(); ++sample)
+        {
+            channelData[sample] = binaural.process(channelData[sample], channel);
+        }
         // ..do something to the data...
     }
 }

@@ -16,11 +16,11 @@
 class BinauralClass
 {
 private:
-    ILDClass ILD { sampleRate };
-    ITDClass ITD { sampleRate };
-    float azimuth;
-    float elevation;
-    float distance;
+    ILDClass ILD;// { sampleRate };
+    ITDClass ITD;// { sampleRate };
+    float azimuth = 0.0f;
+    float elevation = 0.0f;
+    float distance = 1.0f;
     float sampleRate;
     int getCoordinates();
 public:

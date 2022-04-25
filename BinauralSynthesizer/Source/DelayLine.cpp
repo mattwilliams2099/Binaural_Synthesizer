@@ -4,6 +4,7 @@ DelayLineClass::DelayLineClass()
 {
 	setDelayLength(20, 0);
 	setDelayLength(20, 1);
+	clearDelayLine();
 }
 
 void DelayLineClass::setDelayLength(int delay, int channel)
@@ -35,4 +36,15 @@ float DelayLineClass::delayProcess(float sample, int channel)
 {
 	writeToBuffer(sample, channel);
 	return readFromBuffer(channel);
+}
+
+void DelayLineClass::clearDelayLine()
+{
+	for (int ch = 0; ch < 2; ch++)
+	{
+		for (int i = 0; i < BUFFER_LENGTH; i++)
+		{
+			circBuffer[i][ch] = 0.0f;
+		}
+	}
 }

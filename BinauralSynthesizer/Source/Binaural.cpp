@@ -10,11 +10,13 @@
 
 #include "Binaural.h"
 
-BinauralClass::BinauralClass(float samplerate = 48000.0f)
+BinauralClass::BinauralClass(float samplerate)
     : sampleRate(samplerate) 
 {
+    setAzimuth(-45);
+    setElevation(15);
+    setDistance(1.0f);
 }
-
 
 float BinauralClass::process(float sample, int channel)
 {
@@ -24,7 +26,10 @@ float BinauralClass::process(float sample, int channel)
 
 void BinauralClass::setAzimuth(int newAzimuth)
 {
-    azimuth = newAzimuth + 180;
+    if (newAzimuth <= 0)
+        azimuth = abs(newAzimuth);
+    else
+        azimuth = 360 - newAzimuth;
     ILD.setIndex(getCoordinates());
     ITD.setIndex(getCoordinates());
 }

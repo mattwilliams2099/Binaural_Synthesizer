@@ -13,11 +13,12 @@
 ITDClass::ITDClass(float samplerate) : sampleRate(samplerate)
 {
     samplePeriod = 1.0f / sampleRate;
+    loadCoordinateDatabase();
 }
 
 float ITDClass::process(float sample, int channel)
 {
-    return delayLine.delayProcess(sample, channel) * distanceCoefficient[channel];
+    return delayLine.delayProcess(sample, channel) * pow((1 / distance), 2);
 }
 /*
 void ITDClass::setDelay(float az, float el, float dist)
@@ -52,19 +53,19 @@ void ITDClass::setDelay()
 {
     float distance_long = sqrt(pow((distance * coordinatesDatabase[index][0]) + 0.075, 2) + pow ((distance * coordinatesDatabase[index][1]), 2) + pow ((distance * coordinatesDatabase[index][2]), 2));
     float distance_short = sqrt(pow((distance * coordinatesDatabase[index][0]) - 0.075, 2) + pow((distance * coordinatesDatabase[index][1]), 2) + pow((distance * coordinatesDatabase[index][2]), 2));
-    float delay_long = distance_long / 340.29f;
-    float delay_short = distance_short / 340.29f;
+    float delay_long = (distance_long / 340.29f) / samplePeriod;
+    float delay_short = (distance_short / 340.29f) / samplePeriod;
     if (index < 1152)
     {
-        delayLine.setDelayLength(round(delay_short / samplePeriod), 0);
-        delayLine.setDelayLength(round(delay_long / samplePeriod), 1);
+        delayLine.setDelayLength(round(delay_short), 0);
+        delayLine.setDelayLength(round(delay_long), 1);
         distanceCoefficient[0] = pow((1 / distance_short), 2);
         distanceCoefficient[1] = pow((1 / distance_long), 2);
     }
     else
     {
-        delayLine.setDelayLength(round(delay_short / samplePeriod), 1);
-        delayLine.setDelayLength(round(delay_long / samplePeriod), 0);
+        delayLine.setDelayLength(round(delay_short), 1);
+        delayLine.setDelayLength(round(delay_long), 0);
         distanceCoefficient[0] = pow((1 / distance_long), 2);
         distanceCoefficient[1] = pow((1 / distance_short), 2);
     }

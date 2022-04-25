@@ -11,6 +11,7 @@ private:
     int delayLength[2] = { 20, 20 };
     void writeToBuffer(float sample, int channel);
     float readFromBuffer(int channel);
+    void clearDelayLine();
 public:
     DelayLineClass();
     void setDelayLength(int delay, int channel);
