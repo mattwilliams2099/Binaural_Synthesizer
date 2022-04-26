@@ -20,8 +20,16 @@ BinauralClass::BinauralClass(float samplerate)
 
 float BinauralClass::process(float sample, int channel)
 {
+    count++;
+    if (count == 5000)
+    {
+        incrementLFO();
+        count = 0;
+    }
     auto delayedSample = ITD.process(sample, channel);
     return ILD.process(delayedSample, channel);
+    //return ILD.process(sample, channel);
+    //return delayedSample;
 }
 
 void BinauralClass::setAzimuth(int newAzimuth)
@@ -47,8 +55,15 @@ void BinauralClass::setDistance(float newDistance)
     ITD.setDistance(distance);
 }
 
-
 int BinauralClass::getCoordinates()
 {
     return (static_cast<int>(azimuth / 5) * 32) + elevation;
+}
+
+void BinauralClass::incrementLFO()
+{
+    LFO++;
+    if (LFO == 179)
+        LFO = -180;
+    setAzimuth(LFO);
 }

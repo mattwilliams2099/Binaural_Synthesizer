@@ -163,7 +163,7 @@ void BinauralSynthesizerAudioProcessor::processBlock (juce::AudioBuffer<float>& 
     // Alternatively, you can process the samples with the channels
     // interleaved by keeping the same state.
 
-    binaural.setAzimuth(*azimuthParameter);
+    //binaural.setAzimuth(*azimuthParameter);
     binaural.setElevation(*elevationParameter);
     binaural.setDistance(*distanceParameter);
 

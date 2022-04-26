@@ -23,10 +23,13 @@ private:
     float distance = 1.0f;
     float sampleRate;
     int getCoordinates();
+    int LFO = 0;
+    int count = 0;
 public:
     BinauralClass(float samplerate = 48000.0f);
     float process(float sample, int channel);
     void setAzimuth(int newAzimuth);
     void setElevation(int newElevation);
     void setDistance(float newDistance);
+    void incrementLFO();
 };
