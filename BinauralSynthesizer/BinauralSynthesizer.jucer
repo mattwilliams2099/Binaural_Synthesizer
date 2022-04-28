@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="tqywIt" name="BinauralSynthesizer" projectType="audioplug"
-              useAppConfig="0" addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1">
+              useAppConfig="0" addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1"
+              pluginCharacteristicsValue="pluginIsSynth,pluginProducesMidiOut,pluginWantsMidiIn">
   <MAINGROUP id="aw8imb" name="BinauralSynthesizer">
     <GROUP id="{1C7945E0-EE19-8CD9-0E8B-75D9FCADF587}" name="Source">
       <FILE id="pDNcj4" name="PluginProcessor.cpp" compile="1" resource="0"
@@ -24,6 +25,12 @@
       <FILE id="K1kxAM" name="DelayLine.h" compile="0" resource="0" file="Source/DelayLine.h"/>
       <FILE id="NdiZMG" name="Filter.cpp" compile="1" resource="0" file="Source/Filter.cpp"/>
       <FILE id="cOG41E" name="Filter.h" compile="0" resource="0" file="Source/Filter.h"/>
+      <FILE id="jETlzV" name="Oscillator.cpp" compile="1" resource="0" file="Source/Oscillator.cpp"/>
+      <FILE id="WFRnfL" name="Oscillator.h" compile="0" resource="0" file="Source/Oscillator.h"/>
+      <FILE id="hOh8F3" name="Voice.cpp" compile="1" resource="0" file="Source/Voice.cpp"/>
+      <FILE id="wpOFPv" name="Voice.h" compile="0" resource="0" file="Source/Voice.h"/>
+      <FILE id="tDN6tS" name="ADSR.cpp" compile="1" resource="0" file="Source/ADSR.cpp"/>
+      <FILE id="nG6sNk" name="ADSR.h" compile="0" resource="0" file="Source/ADSR.h"/>
     </GROUP>
   </MAINGROUP>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>

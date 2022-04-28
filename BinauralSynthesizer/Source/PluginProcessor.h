@@ -9,7 +9,7 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "Binaural.h"
+#include "BinauralSynth.h"
 
 //==============================================================================
 /**
@@ -56,11 +56,34 @@ public:
 
 private:
     //==============================================================================
-    BinauralClass binaural;
+    //BinauralClass binaural;
+    BinauralSynthClass synthesizer;
     juce::AudioProcessorValueTreeState parameters;
     std::atomic<float>* azimuthParameter = nullptr;
     std::atomic<float>* elevationParameter = nullptr;
     std::atomic<float>* distanceParameter = nullptr;
+
+    std::atomic<float>* osc1_octaveParameter = nullptr;
+    std::atomic<float>* osc1_fineParameter = nullptr;
+    std::atomic<float>* osc1_shapeParameter = nullptr;
+    std::atomic<float>* osc1_mixParameter = nullptr;
+
+    std::atomic<float>* osc2_octaveParameter = nullptr;
+    std::atomic<float>* osc2_fineParameter = nullptr;
+    std::atomic<float>* osc2_shapeParameter = nullptr;
+    std::atomic<float>* osc2_mixParameter = nullptr;
+
+    std::atomic<float>* osc3_octaveParameter = nullptr;
+    std::atomic<float>* osc3_fineParameter = nullptr;
+    std::atomic<float>* osc3_shapeParameter = nullptr;
+    std::atomic<float>* osc3_mixParameter = nullptr;
+
+    std::atomic<float>* attackParameter = nullptr;
+    std::atomic<float>* decayParameter = nullptr;
+    std::atomic<float>* sustainParameter = nullptr;
+    std::atomic<float>* releaseParameter = nullptr;
+
+
 
 
 

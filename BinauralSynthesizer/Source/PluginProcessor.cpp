@@ -21,15 +21,60 @@ BinauralSynthesizerAudioProcessor::BinauralSynthesizerAudioProcessor()
                      #endif
                        ), parameters(*this, nullptr, juce::Identifier("BinauralValueTree"),
                            {
-                                std::make_unique<juce::AudioParameterInt>("AZ",     "Azimuth",  -180,      180,          0),
-                                std::make_unique<juce::AudioParameterInt>("EL",      "Elevation",   0,   32,       15),
-                                std::make_unique<juce::AudioParameterFloat>("DIST",    "Distance", 0.125f, 8.0f,       1.0f) 
+                                std::make_unique<juce::AudioParameterInt>   ("AZ",          "Azimuth",          -180,   180,    0),
+                                std::make_unique<juce::AudioParameterInt>   ("EL",          "Elevation",        0,      32,     15),
+                                std::make_unique<juce::AudioParameterFloat> ("DIST",        "Distance",         0.125f, 2.0f,   1.0f),
+
+                                std::make_unique<juce::AudioParameterInt>   ("OSC1_OCT",    "Osc 1 Octave",     0,      4,      2),
+                                std::make_unique<juce::AudioParameterFloat> ("OSC1_FINE",   "Osc 1 Fine Tune",  0.95f,  1.05f,  1.0f),
+                                std::make_unique<juce::AudioParameterInt>   ("OSC1_SHP",    "Osc 1 Shape",      0,      3,      0),
+                                std::make_unique<juce::AudioParameterFloat> ("OSC1_MIX",    "Osc 1 Mix",        0.0f,   1.0f,   0.7f),
+
+                                std::make_unique<juce::AudioParameterInt>   ("OSC2_OCT",    "Osc 2 Octave",     0,      4,      2),
+                                std::make_unique<juce::AudioParameterFloat> ("OSC2_FINE",   "Osc 2 Fine Tune",  0.95f,  1.05f,  1.0f),
+                                std::make_unique<juce::AudioParameterInt>   ("OSC2_SHP",    "Osc 2 Shape",      0,      3,      0),
+                                std::make_unique<juce::AudioParameterFloat> ("OSC2_MIX",    "Osc 2 Mix",        0.0f,   1.0f,   0.7f),
+
+                                std::make_unique<juce::AudioParameterInt>   ("OSC3_OCT",    "Osc 3 Octave",     0,      4,      2),
+                                std::make_unique<juce::AudioParameterFloat> ("OSC3_FINE",   "Osc 3 Fine Tune",  0.95f,  1.05f,  1.0f),
+                                std::make_unique<juce::AudioParameterInt>   ("OSC3_SHP",    "Osc 3 Shape",      0,      3,      0),
+                                std::make_unique<juce::AudioParameterFloat> ("OSC3_MIX",    "Osc 3 Mix",        0.0f,   1.0f,   0.7f),
+
+                                std::make_unique<juce::AudioParameterInt>   ("ATTACK",      "Attack",           1,      1000,   500),
+                                std::make_unique<juce::AudioParameterInt>   ("DECAY",       "Decay",            1,      1000,   500),
+                                std::make_unique<juce::AudioParameterFloat> ("SUSTAIN",     "Sustain",          0.0f,   1.0f,   0.5f),
+                                std::make_unique<juce::AudioParameterInt>   ("RELEASE",     "Release",          1,      1000,   500),
+
+
                            })
 #endif
 {
     azimuthParameter = parameters.getRawParameterValue("AZ");
     elevationParameter = parameters.getRawParameterValue("EL");
     distanceParameter = parameters.getRawParameterValue("DIST");
+
+    osc1_octaveParameter = parameters.getRawParameterValue("OSC1_OCT");
+    osc1_fineParameter = parameters.getRawParameterValue("OSC1_FINE");
+    osc1_shapeParameter = parameters.getRawParameterValue("OSC1_SHP");
+    osc1_mixParameter = parameters.getRawParameterValue("OSC1_MIX");
+
+    osc2_octaveParameter = parameters.getRawParameterValue("OSC2_OCT");
+    osc2_fineParameter = parameters.getRawParameterValue("OSC2_FINE");
+    osc2_shapeParameter = parameters.getRawParameterValue("OSC2_SHP");
+    osc2_mixParameter = parameters.getRawParameterValue("OSC2_MIX");
+
+    osc3_octaveParameter = parameters.getRawParameterValue("OSC3_OCT");
+    osc3_fineParameter = parameters.getRawParameterValue("OSC3_FINE");
+    osc3_shapeParameter = parameters.getRawParameterValue("OSC3_SHP");
+    osc3_mixParameter = parameters.getRawParameterValue("OSC3_MIX");
+
+    attackParameter = parameters.getRawParameterValue("ATTACK");
+    decayParameter = parameters.getRawParameterValue("DECAY");
+    sustainParameter = parameters.getRawParameterValue("SUSTAIN");
+    releaseParameter = parameters.getRawParameterValue("RELEASE");
+
+
+
 }
 
 BinauralSynthesizerAudioProcessor::~BinauralSynthesizerAudioProcessor()
@@ -103,9 +148,31 @@ void BinauralSynthesizerAudioProcessor::prepareToPlay (double sampleRate, int sa
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
-    binaural.setAzimuth(*azimuthParameter);
-    binaural.setElevation(*elevationParameter);
-    binaural.setDistance(*distanceParameter);
+    synthesizer.prepareToPlay(sampleRate);
+    synthesizer.voices.binaural.setAzimuth(*azimuthParameter);
+    synthesizer.voices.binaural.setElevation(*elevationParameter);
+    synthesizer.voices.binaural.setDistance(*distanceParameter);
+
+    synthesizer.setOscShape(*osc1_shapeParameter, 0);
+    synthesizer.setOscOctave(*osc1_octaveParameter, 0);
+    synthesizer.setOscFineFreq(*osc1_fineParameter, 0);
+    synthesizer.setOscMix(*osc1_mixParameter, 0);
+
+    synthesizer.setOscShape(*osc2_shapeParameter, 1);
+    synthesizer.setOscOctave(*osc2_octaveParameter, 1);
+    synthesizer.setOscFineFreq(*osc2_fineParameter, 1);
+    synthesizer.setOscMix(*osc2_mixParameter, 1);
+
+    synthesizer.setOscShape(*osc3_shapeParameter, 2);
+    synthesizer.setOscOctave(*osc3_octaveParameter, 2);
+    synthesizer.setOscFineFreq(*osc3_fineParameter, 2);
+    synthesizer.setOscMix(*osc3_mixParameter, 2);
+
+    synthesizer.setAmpAttack(*attackParameter);
+    synthesizer.setAmpDecay(*decayParameter);
+    synthesizer.setAmpSustain(*sustainParameter);
+    synthesizer.setAmpRelease(*releaseParameter);
+
 
 }
 
@@ -164,13 +231,33 @@ void BinauralSynthesizerAudioProcessor::processBlock (juce::AudioBuffer<float>& 
     // interleaved by keeping the same state.
 
     //binaural.setAzimuth(*azimuthParameter);
-    binaural.setElevation(*elevationParameter);
-    binaural.setDistance(*distanceParameter);
+    synthesizer.voices.binaural.setElevation(*elevationParameter);
+    synthesizer.voices.binaural.setDistance(*distanceParameter);
+
+    synthesizer.setOscShape(*osc1_shapeParameter, 0);
+    synthesizer.setOscOctave(*osc1_octaveParameter, 0);
+    synthesizer.setOscFineFreq(*osc1_fineParameter, 0);
+    synthesizer.setOscMix(*osc1_mixParameter, 0);
+
+    synthesizer.setOscShape(*osc2_shapeParameter, 1);
+    synthesizer.setOscOctave(*osc2_octaveParameter, 1);
+    synthesizer.setOscFineFreq(*osc2_fineParameter, 1);
+    synthesizer.setOscMix(*osc2_mixParameter, 1);
+
+    synthesizer.setOscShape(*osc3_shapeParameter, 2);
+    synthesizer.setOscOctave(*osc3_octaveParameter, 2);
+    synthesizer.setOscFineFreq(*osc3_fineParameter, 2);
+    synthesizer.setOscMix(*osc3_mixParameter, 2);
+
+    synthesizer.setAmpAttack(*attackParameter);
+    synthesizer.setAmpDecay(*decayParameter);
+    synthesizer.setAmpSustain(*sustainParameter);
+    synthesizer.setAmpRelease(*releaseParameter);
+
+    synthesizer.processBlock(buffer, midiMessages);
 
 
-
-
-    for (int channel = 0; channel < totalNumInputChannels; ++channel)
+    /*for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
         auto* channelData = buffer.getWritePointer (channel);
         for (int sample = 0; sample < buffer.getNumSamples(); ++sample)
@@ -178,7 +265,7 @@ void BinauralSynthesizerAudioProcessor::processBlock (juce::AudioBuffer<float>& 
             channelData[sample] = binaural.process(channelData[sample], channel);
         }
         // ..do something to the data...
-    }
+    }*/
 }
 
 //==============================================================================
