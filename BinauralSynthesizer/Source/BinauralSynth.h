@@ -2,22 +2,38 @@
 #pragma once
 #include "JuceHeader.h"
 #include "Voice.h"
-
+#include "LFO.h"
 #define NUM_VOICES 2
 class BinauralSynthClass
 {
 private:
-
+    LFOClass azimuthLFO[3];
+    VoiceClass voices{ sampleRate };
     float sampleRate;
     void handleMidiEvent(const juce::MidiMessage& midiEvent);
     void render(juce::AudioBuffer<float>& buffer, int startSample, int endSample);
     int activeNoteID[NUM_VOICES] = { 0, 0 };
 public:
-    VoiceClass voices{ sampleRate };
+
     BinauralSynthClass(float samplerate);
     BinauralSynthClass() = default;
     void processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages);
     void prepareToPlay(double samplerate);
+
+    void setAzimuth(int newValue, int oscNumber)
+    {
+        voices.setAzimuth(newValue, oscNumber);
+    }
+
+    void setElevation(int newValue, int oscNumber)
+    {
+        voices.setElevation(newValue, oscNumber);
+    }
+
+    void setDistance(float newValue, int oscNumber)
+    {
+        voices.setDistance(newValue, oscNumber);
+    }
 
     void setOscShape(int newValue, int oscNumber)
     {
@@ -35,39 +51,49 @@ public:
         voices.setOscFine(newValue, oscNumber);
     }
 
-    void setOscOctave(float newValue, int oscNumber)
+    void setOscOctave (float newValue, int oscNumber)
     {
-        voices.setOscOct(newValue, oscNumber);
+        voices.setOscOct (newValue, oscNumber);
     }
 
-    void setFilter(float newCutoff, float newResonance)
+    void setLFOFreq(float newValue, int oscNumber)
     {
-        //for (VoiceClass voice : voices)
-        voices.setFilter(newCutoff, newResonance);
+        azimuthLFO[oscNumber].setFrequency(newValue);
     }
 
-    void setAmpAttack(int newValue)
+    void setFilter (float newCutoff, float newResonance)
     {
         //for (VoiceClass voice : voices)
-        voices.setAmpAttack(newValue);
+        voices.setFilter (newCutoff, newResonance);
     }
 
-    void setAmpDecay(int newValue)
+    void setAmpAttack (int newValue)
     {
         //for (VoiceClass voice : voices)
-        voices.setAmpDecay(newValue);
+        voices.setAmpAttack (newValue);
     }
 
-    void setAmpSustain(float newValue)
+    void setAmpDecay (int newValue)
     {
         //for (VoiceClass voice : voices)
-        voices.setAmpSustain(newValue);
+        voices.setAmpDecay (newValue);
     }
 
-    void setAmpRelease(int newValue)
+    void setAmpSustain (float newValue)
     {
         //for (VoiceClass voice : voices)
-        voices.setAmpRelease(newValue);
+        voices.setAmpSustain (newValue);
+    }
+
+    void setAmpRelease (int newValue)
+    {
+        //for (VoiceClass voice : voices)
+        voices.setAmpRelease (newValue);
+    }
+
+    void setFilterEGAmt (float newEnvAmt)
+    {
+        voices.setFilterEGAmt(newEnvAmt);
     }
 
 };

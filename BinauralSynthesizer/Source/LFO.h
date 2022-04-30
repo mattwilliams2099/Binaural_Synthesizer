@@ -1,0 +1,40 @@
+/*
+  ==============================================================================
+
+    LFO.h
+    Created: 29 Apr 2022 11:31:23am
+    Author:  Matthew Williams
+
+  ==============================================================================
+*/
+
+#pragma once
+#include <iostream>
+#define WAVETABLE_LENGTH 64
+
+
+class LFOClass
+{
+public:
+    float process();
+    enum shape : unsigned int
+    {
+        sine, sawUp
+    };
+    void setRange(float newRange);
+    void setOffset(float newOffset);
+    void setFrequency(float newFrequency);
+    void setShape(LFOClass::shape wave);
+    void setSampleRate(float samplerate) { sampleRate = samplerate; }
+private:
+    float wavetable [WAVETABLE_LENGTH];
+    float linearInterpolate();
+    int LFOwave = 0;
+    float index = 0;
+    float indexIncrement = 0;
+    float range = 2;
+    float offset = 0;
+    float frequency;
+    float sampleRate = 48000;
+    bool global = true;
+};

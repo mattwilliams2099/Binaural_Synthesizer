@@ -59,9 +59,21 @@ private:
     //BinauralClass binaural;
     BinauralSynthClass synthesizer;
     juce::AudioProcessorValueTreeState parameters;
-    std::atomic<float>* azimuthParameter = nullptr;
-    std::atomic<float>* elevationParameter = nullptr;
-    std::atomic<float>* distanceParameter = nullptr;
+    //std::atomic<float>* azimuthParameter = nullptr;
+    //std::atomic<float>* elevationParameter = nullptr;
+    //std::atomic<float>* distanceParameter = nullptr;
+
+    std::atomic<float>* osc1_azimuthParameter = nullptr;
+    std::atomic<float>* osc1_elevationParameter = nullptr;
+    std::atomic<float>* osc1_distanceParameter = nullptr;
+
+    std::atomic<float>* osc2_azimuthParameter = nullptr;
+    std::atomic<float>* osc2_elevationParameter = nullptr;
+    std::atomic<float>* osc2_distanceParameter = nullptr;
+
+    std::atomic<float>* osc3_azimuthParameter = nullptr;
+    std::atomic<float>* osc3_elevationParameter = nullptr;
+    std::atomic<float>* osc3_distanceParameter = nullptr;
 
     std::atomic<float>* osc1_octaveParameter = nullptr;
     std::atomic<float>* osc1_fineParameter = nullptr;
@@ -83,7 +95,13 @@ private:
     std::atomic<float>* sustainParameter = nullptr;
     std::atomic<float>* releaseParameter = nullptr;
 
+    std::atomic<float>* filterCutoffParameter = nullptr;
+    std::atomic<float>* filterResonanceParameter = nullptr;
+    std::atomic<float>* filterEGAmtParameter = nullptr;
 
+    std::atomic<float>* LFO1_freqParameter = nullptr;
+    std::atomic<float>* LFO2_freqParameter = nullptr;
+    std::atomic<float>* LFO3_freqParameter = nullptr;
 
 
 

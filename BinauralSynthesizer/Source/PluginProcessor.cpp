@@ -21,9 +21,17 @@ BinauralSynthesizerAudioProcessor::BinauralSynthesizerAudioProcessor()
                      #endif
                        ), parameters(*this, nullptr, juce::Identifier("BinauralValueTree"),
                            {
-                                std::make_unique<juce::AudioParameterInt>   ("AZ",          "Azimuth",          -180,   180,    0),
-                                std::make_unique<juce::AudioParameterInt>   ("EL",          "Elevation",        0,      32,     15),
-                                std::make_unique<juce::AudioParameterFloat> ("DIST",        "Distance",         0.125f, 2.0f,   1.0f),
+                                std::make_unique<juce::AudioParameterInt>   ("OSC1_AZ",     "Osc 1 Azimuth",    -180,   180,    0),
+                                std::make_unique<juce::AudioParameterInt>   ("OSC1_EL",     "Osc 1 Elevation",  0,      32,     15),
+                                std::make_unique<juce::AudioParameterFloat> ("OSC1_DIST",   "Osc 1 Distance",   0.125f, 2.0f,   1.0f),
+                                
+                                std::make_unique<juce::AudioParameterInt>   ("OSC2_AZ",     "Osc 2 Azimuth",    -180,   180,    0),
+                                std::make_unique<juce::AudioParameterInt>   ("OSC2_EL",     "Osc 2 Elevation",  0,      32,     15),
+                                std::make_unique<juce::AudioParameterFloat> ("OSC2_DIST",   "Osc 2 Distance",   0.125f, 2.0f,   1.0f),
+                                
+                                std::make_unique<juce::AudioParameterInt>   ("OSC3_AZ",     "Osc 3 Azimuth",    -180,   180,    0),
+                                std::make_unique<juce::AudioParameterInt>   ("OSC3_EL",     "Osc 3 Elevation",  0,      32,     15),
+                                std::make_unique<juce::AudioParameterFloat> ("OSC3_DIST",   "Osc 3 Distance",   0.125f, 2.0f,   1.0f),
 
                                 std::make_unique<juce::AudioParameterInt>   ("OSC1_OCT",    "Osc 1 Octave",     0,      4,      2),
                                 std::make_unique<juce::AudioParameterFloat> ("OSC1_FINE",   "Osc 1 Fine Tune",  0.95f,  1.05f,  1.0f),
@@ -45,13 +53,28 @@ BinauralSynthesizerAudioProcessor::BinauralSynthesizerAudioProcessor()
                                 std::make_unique<juce::AudioParameterFloat> ("SUSTAIN",     "Sustain",          0.0f,   1.0f,   0.5f),
                                 std::make_unique<juce::AudioParameterInt>   ("RELEASE",     "Release",          1,      1000,   500),
 
+                                std::make_unique<juce::AudioParameterFloat> ("CUTOFF",      "Cutoff",           20.0f,  20000.0f,20000.0f),
+                                std::make_unique<juce::AudioParameterFloat> ("RESONANCE",   "Resonance",        0.1,    20.0f,  0.5f),
+                                std::make_unique<juce::AudioParameterFloat> ("FILTER_ENV",  "Filter EG Amt",    0.0f,   10000.0f,0.0f),
+
+                                std::make_unique<juce::AudioParameterFloat> ("LFO1_FREQ",   "LFO 1 Freq",       0.01f,  100.0f, 1.0f),
+                                std::make_unique<juce::AudioParameterFloat> ("LFO2_FREQ",   "LFO 2 Freq",       0.01f,  100.0f, 1.0f),
+                                std::make_unique<juce::AudioParameterFloat> ("LFO3_FREQ",   "LFO 3 Freq",       0.01f,  100.0f, 1.0f),
 
                            })
 #endif
 {
-    azimuthParameter = parameters.getRawParameterValue("AZ");
-    elevationParameter = parameters.getRawParameterValue("EL");
-    distanceParameter = parameters.getRawParameterValue("DIST");
+    osc1_azimuthParameter = parameters.getRawParameterValue("OSC1_AZ");
+    osc1_elevationParameter = parameters.getRawParameterValue("OSC1_EL");
+    osc1_distanceParameter = parameters.getRawParameterValue("OSC1_DIST");
+
+    osc2_azimuthParameter = parameters.getRawParameterValue("OSC2_AZ");
+    osc2_elevationParameter = parameters.getRawParameterValue("OSC2_EL");
+    osc2_distanceParameter = parameters.getRawParameterValue("OSC2_DIST");
+
+    osc3_azimuthParameter = parameters.getRawParameterValue("OSC3_AZ");
+    osc3_elevationParameter = parameters.getRawParameterValue("OSC3_EL");
+    osc3_distanceParameter = parameters.getRawParameterValue("OSC3_DIST");
 
     osc1_octaveParameter = parameters.getRawParameterValue("OSC1_OCT");
     osc1_fineParameter = parameters.getRawParameterValue("OSC1_FINE");
@@ -73,7 +96,13 @@ BinauralSynthesizerAudioProcessor::BinauralSynthesizerAudioProcessor()
     sustainParameter = parameters.getRawParameterValue("SUSTAIN");
     releaseParameter = parameters.getRawParameterValue("RELEASE");
 
+    filterCutoffParameter = parameters.getRawParameterValue("CUTOFF");
+    filterResonanceParameter = parameters.getRawParameterValue("RESONANCE");
+    filterEGAmtParameter = parameters.getRawParameterValue("FILTER_ENV");
 
+    LFO1_freqParameter = parameters.getRawParameterValue("LFO1_FREQ");
+    LFO2_freqParameter = parameters.getRawParameterValue("LFO2_FREQ");
+    LFO3_freqParameter = parameters.getRawParameterValue("LFO3_FREQ");
 
 }
 
@@ -149,9 +178,23 @@ void BinauralSynthesizerAudioProcessor::prepareToPlay (double sampleRate, int sa
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
     synthesizer.prepareToPlay(sampleRate);
-    synthesizer.voices.binaural.setAzimuth(*azimuthParameter);
-    synthesizer.voices.binaural.setElevation(*elevationParameter);
-    synthesizer.voices.binaural.setDistance(*distanceParameter);
+
+    //synthesizer.setAzimuth(*osc1_azimuthParameter, 0);
+    synthesizer.setElevation(*osc1_elevationParameter, 0);
+    synthesizer.setDistance(*osc1_distanceParameter, 0);
+    
+    //synthesizer.setAzimuth(*osc2_azimuthParameter, 1);
+    synthesizer.setElevation(*osc2_elevationParameter, 1);
+    synthesizer.setDistance(*osc2_distanceParameter, 1);
+    
+    //synthesizer.setAzimuth(*osc3_azimuthParameter, 2);
+    synthesizer.setElevation(*osc3_elevationParameter, 2);
+    synthesizer.setDistance(*osc3_distanceParameter, 2);
+    
+    
+    //synthesizer.voices.binaural.setAzimuth(*azimuthParameter);
+    //synthesizer.voices.binaural.setElevation(*elevationParameter);
+    //synthesizer.voices.binaural.setDistance(*distanceParameter);
 
     synthesizer.setOscShape(*osc1_shapeParameter, 0);
     synthesizer.setOscOctave(*osc1_octaveParameter, 0);
@@ -172,6 +215,13 @@ void BinauralSynthesizerAudioProcessor::prepareToPlay (double sampleRate, int sa
     synthesizer.setAmpDecay(*decayParameter);
     synthesizer.setAmpSustain(*sustainParameter);
     synthesizer.setAmpRelease(*releaseParameter);
+
+    synthesizer.setFilter(*filterCutoffParameter, *filterResonanceParameter);
+    synthesizer.setFilterEGAmt(*filterEGAmtParameter);
+
+    synthesizer.setLFOFreq(*LFO1_freqParameter, 0);
+    synthesizer.setLFOFreq(*LFO2_freqParameter, 1);
+    synthesizer.setLFOFreq(*LFO3_freqParameter, 2);
 
 
 }
@@ -231,8 +281,20 @@ void BinauralSynthesizerAudioProcessor::processBlock (juce::AudioBuffer<float>& 
     // interleaved by keeping the same state.
 
     //binaural.setAzimuth(*azimuthParameter);
-    synthesizer.voices.binaural.setElevation(*elevationParameter);
-    synthesizer.voices.binaural.setDistance(*distanceParameter);
+    //synthesizer.voices.binaural.setElevation(*elevationParameter);
+    //synthesizer.voices.binaural.setDistance(*distanceParameter);
+
+    synthesizer.setAzimuth(*osc1_azimuthParameter, 0);
+    synthesizer.setElevation(*osc1_elevationParameter, 0);
+    synthesizer.setDistance(*osc1_distanceParameter, 0);
+
+    synthesizer.setAzimuth(*osc2_azimuthParameter, 1);
+    synthesizer.setElevation(*osc2_elevationParameter, 1);
+    synthesizer.setDistance(*osc2_distanceParameter, 1);
+
+    synthesizer.setAzimuth(*osc3_azimuthParameter, 2);
+    synthesizer.setElevation(*osc3_elevationParameter, 2);
+    synthesizer.setDistance(*osc3_distanceParameter, 2);
 
     synthesizer.setOscShape(*osc1_shapeParameter, 0);
     synthesizer.setOscOctave(*osc1_octaveParameter, 0);
@@ -253,6 +315,13 @@ void BinauralSynthesizerAudioProcessor::processBlock (juce::AudioBuffer<float>& 
     synthesizer.setAmpDecay(*decayParameter);
     synthesizer.setAmpSustain(*sustainParameter);
     synthesizer.setAmpRelease(*releaseParameter);
+
+    synthesizer.setFilter(*filterCutoffParameter, *filterResonanceParameter);
+    synthesizer.setFilterEGAmt(*filterEGAmtParameter);
+
+    synthesizer.setLFOFreq(*LFO1_freqParameter, 0);
+    synthesizer.setLFOFreq(*LFO2_freqParameter, 1);
+    synthesizer.setLFOFreq(*LFO3_freqParameter, 2);
 
     synthesizer.processBlock(buffer, midiMessages);
 

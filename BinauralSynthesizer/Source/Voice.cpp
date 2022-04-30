@@ -18,15 +18,22 @@ VoiceClass::VoiceClass(float samplerate) : sampleRate(samplerate)
 
 float VoiceClass::voiceProcess(int channel)
 {
-    float oscOutput = 0;
+    float envelopeOutput = envelope[channel].ADSRProcess();
+    applyFilterEnvelope(envelopeOutput);
+    float oscOutput = 0.0f;
     for (int i = 0; i < NUM_OSCILLATORS; i++)
     {
-        oscOutput += oscillator[channel][i].oscillatorProcess()* oscMix[i];
+        oscOutput += binaural[i].process(oscillator[channel][i].oscillatorProcess() * oscMix[i], channel);
     }
-    //float filterOutput = LPF.filterProcess((oscOutput * 0.3), channel);
-    float ampOutput = oscOutput * ampEnvelope[channel].ADSRProcess();
-    float binauralOutput = binaural.process(ampOutput, channel);
-    return binauralOutput;
+    float filterOutput = LPF.filterProcess((oscOutput), channel);
+    float ampOutput = filterOutput * envelopeOutput;
+    //float binauralOutput = binaural.process(ampOutput, channel);
+    return ampOutput;
+}
+
+void VoiceClass::applyFilterEnvelope(float envOutput)
+{
+    LPF.setLowPassCo((cutoff + (envOutput * filterEGAmt)), resonance);
 }
 
 void VoiceClass::newNote(int midiNote)
@@ -38,7 +45,7 @@ void VoiceClass::newNote(int midiNote)
         {
             oscillator[channel][osc].setFrequency(frequencyHz);
         }
-        ampEnvelope[channel].keyDown();
+        envelope[channel].keyDown();
     }
     //oscillator[0].setFrequency(frequencyHz);
     //oscillator[1].setFrequency(frequencyHz);
@@ -53,8 +60,8 @@ float VoiceClass::midiNoteToHz(int midiNote)
 
 void VoiceClass::noteRelease()
 {
-    ampEnvelope[0].keyUp();
-    ampEnvelope[1].keyUp();
+    envelope[0].keyUp();
+    envelope[1].keyUp();
 
     /*
     for (int channel = 0; channel < 2; channel++)
@@ -70,7 +77,7 @@ void VoiceClass::noteRelease()
 bool VoiceClass::isPlaying()
 {
     //return oscillator[0][0].isPlaying();
-    return ampEnvelope[0].isActive();
+    return envelope[0].isActive();
 }
 
 void VoiceClass::prepareToPlay()
@@ -87,7 +94,7 @@ void VoiceClass::setSampleRate(float newValue)
         {
             oscillator[channel][osc].setSampleRate(sampleRate);
         }
-        ampEnvelope[channel].setSampleRate(sampleRate);
+        envelope[channel].setSampleRate(sampleRate);
     }
     //oscillator[0].setSampleRate(sampleRate);
     //oscillator[1].setSampleRate(sampleRate);

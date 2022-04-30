@@ -18,7 +18,15 @@ BinauralSynthClass::BinauralSynthClass(float samplerate) : sampleRate(samplerate
 void BinauralSynthClass::prepareToPlay(double samplerate)
 {
     //for (VoiceClass voice : voices)
-    //{
+    
+    for(int i = 0; i < 3; i++)
+    {
+    azimuthLFO[i].setRange(359.0f);
+    azimuthLFO[i].setOffset(-0.5f);
+    azimuthLFO[i].setShape(LFOClass::sawUp);
+    }
+
+
     voices.setSampleRate(static_cast<float>(samplerate));
     voices.prepareToPlay();
     //}
@@ -28,7 +36,10 @@ void BinauralSynthClass::prepareToPlay(double samplerate)
 void BinauralSynthClass::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
     auto currentSample = 0;
-
+    for (int i = 0; i < 3; i++)
+    {
+        setAzimuth(static_cast<int>(azimuthLFO[i].process()), i);
+    }
     for (const auto midiMessage : midiMessages)
     {
         const auto midiEvent = midiMessage.getMessage();

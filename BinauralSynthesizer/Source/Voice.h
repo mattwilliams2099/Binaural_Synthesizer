@@ -19,7 +19,7 @@ class VoiceClass
 {
 
 public:
-    BinauralClass binaural;
+
     VoiceClass(float samplerate);
     VoiceClass() = default;
     float voiceProcess(int channel);
@@ -28,6 +28,22 @@ public:
     bool isPlaying();
     void setSampleRate(float newValue);
     void prepareToPlay();
+
+
+    void setAzimuth(int newValue, int oscNumber)
+    {
+        binaural[oscNumber].setAzimuth(newValue);
+    }
+
+    void setElevation(int newValue, int oscNumber)
+    {
+        binaural[oscNumber].setElevation(newValue);
+    }
+
+    void setDistance(float newValue, int oscNumber)
+    {
+        binaural[oscNumber].setDistance(newValue);
+    }
 
     void setOscShape(int newValue, int oscNumber) 
     { 
@@ -47,30 +63,35 @@ public:
         oscillator[1][oscNumber].setOctave(newValue);
     }
 
-    void setFilter(float newCutoff, float newResonance) { LPF.setLowPassCo(newCutoff, newResonance); }
+    void setFilter(float newCutoff, float newResonance) 
+    { 
+        cutoff = newCutoff;
+        resonance = newResonance;
+        LPF.setLowPassCo(newCutoff, newResonance); 
+    }
 
     void setAmpAttack(int newValue) 
     { 
-        ampEnvelope[0].setAttack(newValue); 
-        ampEnvelope[1].setAttack(newValue);
+        envelope[0].setAttack(newValue); 
+        envelope[1].setAttack(newValue);
     }
 
     void setAmpDecay(int newValue) 
     { 
-        ampEnvelope[0].setDecay(newValue); 
-        ampEnvelope[1].setDecay(newValue);
+        envelope[0].setDecay(newValue); 
+        envelope[1].setDecay(newValue);
     }
 
     void setAmpSustain(float newValue) 
     {   
-        ampEnvelope[0].setSustain(newValue); 
-        ampEnvelope[1].setSustain(newValue); 
+        envelope[0].setSustain(newValue); 
+        envelope[1].setSustain(newValue); 
     }
     
     void setAmpRelease(int newValue) 
     { 
-        ampEnvelope[0].setRelease(newValue); 
-        ampEnvelope[1].setRelease(newValue);
+        envelope[0].setRelease(newValue); 
+        envelope[1].setRelease(newValue);
     }
 
     void setOscMix(float newOscMixAmt, int osc)
@@ -78,12 +99,21 @@ public:
         oscMix[osc] = newOscMixAmt;
     }
 
+    void setFilterEGAmt(float newEnvAmt)
+    {
+        filterEGAmt = newEnvAmt;
+    }
+
 private:
     OscillatorClass oscillator[2][NUM_OSCILLATORS]{ sampleRate };
-    ADSRClass ampEnvelope[2]{ sampleRate };
+    ADSRClass envelope[2]{ sampleRate };
     FilterClass LPF{ sampleRate };
+    BinauralClass binaural[NUM_OSCILLATORS];
     float midiNoteToHz(int midiNote);
     float sampleRate;
     float oscMix[NUM_OSCILLATORS];
-
+    float cutoff;
+    float resonance;
+    float filterEGAmt;
+    void applyFilterEnvelope(float envOutput);
 };

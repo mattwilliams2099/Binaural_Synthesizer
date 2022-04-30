@@ -34,9 +34,9 @@ private:
     BinauralSynthesizerAudioProcessor& audioProcessor;
     juce::AudioProcessorValueTreeState& valueTreeState;
 
-    juce::Slider elevationSlider;
-    juce::Slider azimuthSlider;
-    juce::Slider distanceSlider;
+    juce::Slider elevationSlider[3];
+    juce::Slider azimuthSlider[3];
+    juce::Slider distanceSlider[3];
     /*
     juce::Slider osc1_octaveSlider;
     juce::Slider osc1_fineSlider;
@@ -53,16 +53,30 @@ private:
     juce::Slider osc_shapeSlider[3];
     juce::Slider osc_mixSlider[3];
 
+    juce::Slider LFO_freqSlider[3];
+
     juce::Slider attackSlider;
     juce::Slider decaySlider;
     juce::Slider sustainSlider;
     juce::Slider releaseSlider;
 
+    juce::Slider filterCutoffSlider;
+    juce::Slider filterResonanceSlider;
+    juce::Slider filterEGAmtSlider;
+
     juce::ComboBox oscMenu;
 
-    std::unique_ptr<SliderAttachment> elevationSliderAttachment;
-    std::unique_ptr<SliderAttachment> azimuthSliderAttachment;
-    std::unique_ptr<SliderAttachment> distanceSliderAttachment;
+    std::unique_ptr<SliderAttachment> osc1_elevationSliderAttachment;
+    std::unique_ptr<SliderAttachment> osc1_azimuthSliderAttachment;
+    std::unique_ptr<SliderAttachment> osc1_distanceSliderAttachment;
+
+    std::unique_ptr<SliderAttachment> osc2_elevationSliderAttachment;
+    std::unique_ptr<SliderAttachment> osc2_azimuthSliderAttachment;
+    std::unique_ptr<SliderAttachment> osc2_distanceSliderAttachment;
+
+    std::unique_ptr<SliderAttachment> osc3_elevationSliderAttachment;
+    std::unique_ptr<SliderAttachment> osc3_azimuthSliderAttachment;
+    std::unique_ptr<SliderAttachment> osc3_distanceSliderAttachment;
 
     std::unique_ptr<SliderAttachment> osc1_octaveSliderAttachment;
     std::unique_ptr<SliderAttachment> osc1_fineSliderAttachment;
@@ -84,7 +98,13 @@ private:
     std::unique_ptr<SliderAttachment> sustainSliderAttachment;
     std::unique_ptr<SliderAttachment> releaseSliderAttachment;
 
+    std::unique_ptr<SliderAttachment> filterCutoffSliderAttachment;
+    std::unique_ptr<SliderAttachment> filterResonanceSliderAttachment;
+    std::unique_ptr<SliderAttachment> filterEGAmtSliderAttachment;
 
+    std::unique_ptr<SliderAttachment> LFO1_freqSliderAttachment;
+    std::unique_ptr<SliderAttachment> LFO2_freqSliderAttachment;
+    std::unique_ptr<SliderAttachment> LFO3_freqSliderAttachment;
 
     void setSlider(juce::Slider& slider, juce::Colour colour, juce::Slider::SliderStyle style);
 

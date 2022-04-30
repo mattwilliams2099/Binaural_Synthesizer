@@ -20,12 +20,12 @@ BinauralClass::BinauralClass(float samplerate)
 
 float BinauralClass::process(float sample, int channel)
 {
-    count++;
-    if (count == 5000)
-    {
-        incrementLFO();
-        count = 0;
-    }
+    //count++;
+    //if (count == 5000)
+    //{
+    //    incrementLFO();
+    //    count = 0;
+    //}
     auto delayedSample = ITD.process(sample, channel);
     return ILD.process(delayedSample, channel);
     //return ILD.process(sample, channel);

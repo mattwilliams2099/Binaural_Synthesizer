@@ -13,55 +13,53 @@
 BinauralSynthesizerAudioProcessorEditor::BinauralSynthesizerAudioProcessorEditor (BinauralSynthesizerAudioProcessor& p, juce::AudioProcessorValueTreeState& vts)
     : AudioProcessorEditor (&p), audioProcessor (p), valueTreeState(vts)
 {
-    // Make sure that before the constructor has finished, you've set the
-    // editor's size to whatever you need it to be.
-    setSlider(azimuthSlider, juce::Colours::red, juce::Slider::SliderStyle::LinearVertical);
-    setSlider(elevationSlider, juce::Colours::red, juce::Slider::SliderStyle::LinearVertical);
-    setSlider(distanceSlider, juce::Colours::red, juce::Slider::SliderStyle::LinearVertical);
-    /*
-    setSlider(osc1_octaveSlider, juce::Colours::red, juce::Slider::SliderStyle::LinearVertical);
-    setSlider(osc1_fineSlider, juce::Colours::red, juce::Slider::SliderStyle::LinearVertical);
-    setSlider(osc1_shapeSlider, juce::Colours::red, juce::Slider::SliderStyle::LinearVertical);
-    setSlider(osc1_mixSlider, juce::Colours::red, juce::Slider::SliderStyle::LinearVertical);
-
-    setSlider(osc2_octaveSlider, juce::Colours::red, juce::Slider::SliderStyle::LinearVertical);
-    setSlider(osc2_fineSlider, juce::Colours::red, juce::Slider::SliderStyle::LinearVertical);
-    setSlider(osc2_shapeSlider, juce::Colours::red, juce::Slider::SliderStyle::LinearVertical);
-    setSlider(osc2_mixSlider, juce::Colours::red, juce::Slider::SliderStyle::LinearVertical);
-    */
 
     for (int i = 0; i < 3; i++)
     {
-        setSlider(osc_octaveSlider[i], juce::Colours::red, juce::Slider::SliderStyle::LinearVertical);
-        setSlider(osc_fineSlider[i], juce::Colours::red, juce::Slider::SliderStyle::LinearVertical);
-        setSlider(osc_shapeSlider[i], juce::Colours::red, juce::Slider::SliderStyle::LinearVertical);
-        setSlider(osc_mixSlider[i], juce::Colours::red, juce::Slider::SliderStyle::LinearVertical);
+        setSlider(osc_octaveSlider[i], juce::Colours::whitesmoke, juce::Slider::SliderStyle::LinearVertical);
+        setSlider(osc_fineSlider[i], juce::Colours::whitesmoke, juce::Slider::SliderStyle::LinearVertical);
+        setSlider(osc_shapeSlider[i], juce::Colours::whitesmoke, juce::Slider::SliderStyle::LinearVertical);
+        setSlider(osc_mixSlider[i], juce::Colours::whitesmoke, juce::Slider::SliderStyle::LinearVertical);
+
+        setSlider(azimuthSlider[i], juce::Colours::whitesmoke, juce::Slider::SliderStyle::LinearVertical);
+        setSlider(elevationSlider[i], juce::Colours::whitesmoke, juce::Slider::SliderStyle::LinearVertical);
+        setSlider(distanceSlider[i], juce::Colours::whitesmoke, juce::Slider::SliderStyle::LinearVertical);
+        
+        setSlider(LFO_freqSlider[i], juce::Colours::whitesmoke, juce::Slider::SliderStyle::LinearVertical);
+
     }
 
-    setSlider(attackSlider, juce::Colours::red, juce::Slider::SliderStyle::LinearVertical);
-    setSlider(decaySlider, juce::Colours::red, juce::Slider::SliderStyle::LinearVertical);
-    setSlider(sustainSlider, juce::Colours::red, juce::Slider::SliderStyle::LinearVertical);
-    setSlider(releaseSlider, juce::Colours::red, juce::Slider::SliderStyle::LinearVertical);
+    setSlider(attackSlider, juce::Colours::whitesmoke, juce::Slider::SliderStyle::LinearVertical);
+    setSlider(decaySlider, juce::Colours::whitesmoke, juce::Slider::SliderStyle::LinearVertical);
+    setSlider(sustainSlider, juce::Colours::whitesmoke, juce::Slider::SliderStyle::LinearVertical);
+    setSlider(releaseSlider, juce::Colours::whitesmoke, juce::Slider::SliderStyle::LinearVertical);
+
+    setSlider(filterCutoffSlider, juce::Colours::whitesmoke, juce::Slider::SliderStyle::LinearVertical);
+    setSlider(filterResonanceSlider, juce::Colours::whitesmoke, juce::Slider::SliderStyle::LinearVertical);
+    setSlider(filterEGAmtSlider, juce::Colours::whitesmoke, juce::Slider::SliderStyle::LinearVertical);
 
     addAndMakeVisible(oscMenu);
     oscMenu.addItemList({ "1", "2", "3" }, 1);
     oscMenu.addListener(this);
     oscMenu.setSelectedItemIndex(0, 1);
+    oscMenu.setColour(juce::ComboBox::backgroundColourId, juce::Colours::white);
+    oscMenu.setColour(juce::ComboBox::textColourId, juce::Colours::blue);
+    oscMenu.setColour(juce::ComboBox::arrowColourId, juce::Colours::blue);
+    oscMenu.setColour(juce::ComboBox::outlineColourId, juce::Colours::blue);
+    
 
-    azimuthSliderAttachment = std::make_unique<SliderAttachment>(valueTreeState, "AZ", azimuthSlider);
-    elevationSliderAttachment = std::make_unique<SliderAttachment>(valueTreeState, "EL", elevationSlider);
-    distanceSliderAttachment = std::make_unique<SliderAttachment>(valueTreeState, "DIST", distanceSlider);
-    /*
-    osc1_octaveSliderAttachment = std::make_unique<SliderAttachment>(valueTreeState, "OSC1_OCT", osc1_octaveSlider);
-    osc1_fineSliderAttachment = std::make_unique<SliderAttachment>(valueTreeState, "OSC1_FINE", osc1_fineSlider);
-    osc1_shapeSliderAttachment = std::make_unique<SliderAttachment>(valueTreeState, "OSC1_SHP", osc1_shapeSlider);
-    osc1_mixSliderAttachment = std::make_unique<SliderAttachment>(valueTreeState, "OSC1_MIX", osc1_mixSlider);
 
-    osc2_octaveSliderAttachment = std::make_unique<SliderAttachment>(valueTreeState, "OSC2_OCT", osc2_octaveSlider);
-    osc2_fineSliderAttachment = std::make_unique<SliderAttachment>(valueTreeState, "OSC2_FINE", osc2_fineSlider);
-    osc2_shapeSliderAttachment = std::make_unique<SliderAttachment>(valueTreeState, "OSC2_SHP", osc2_shapeSlider);
-    osc2_mixSliderAttachment = std::make_unique<SliderAttachment>(valueTreeState, "OSC2_MIX", osc2_mixSlider);
-    */
+    osc1_azimuthSliderAttachment = std::make_unique<SliderAttachment>(valueTreeState, "OSC1_AZ", azimuthSlider[0]);
+    osc1_elevationSliderAttachment = std::make_unique<SliderAttachment>(valueTreeState, "OSC1_EL", elevationSlider[0]);
+    osc1_distanceSliderAttachment = std::make_unique<SliderAttachment>(valueTreeState, "OSC1_DIST", distanceSlider[0]);
+
+    osc2_azimuthSliderAttachment = std::make_unique<SliderAttachment>(valueTreeState, "OSC2_AZ", azimuthSlider[1]);
+    osc2_elevationSliderAttachment = std::make_unique<SliderAttachment>(valueTreeState, "OSC2_EL", elevationSlider[1]);
+    osc2_distanceSliderAttachment = std::make_unique<SliderAttachment>(valueTreeState, "OSC2_DIST", distanceSlider[1]);
+
+    osc3_azimuthSliderAttachment = std::make_unique<SliderAttachment>(valueTreeState, "OSC3_AZ", azimuthSlider[2]);
+    osc3_elevationSliderAttachment = std::make_unique<SliderAttachment>(valueTreeState, "OSC3_EL", elevationSlider[2]);
+    osc3_distanceSliderAttachment = std::make_unique<SliderAttachment>(valueTreeState, "OSC3_DIST", distanceSlider[2]);
 
     osc1_octaveSliderAttachment = std::make_unique<SliderAttachment>(valueTreeState, "OSC1_OCT", osc_octaveSlider[0]);
     osc1_fineSliderAttachment = std::make_unique<SliderAttachment>(valueTreeState, "OSC1_FINE", osc_fineSlider[0]);
@@ -83,8 +81,22 @@ BinauralSynthesizerAudioProcessorEditor::BinauralSynthesizerAudioProcessorEditor
     sustainSliderAttachment = std::make_unique<SliderAttachment>(valueTreeState, "SUSTAIN", sustainSlider);
     releaseSliderAttachment = std::make_unique<SliderAttachment>(valueTreeState, "RELEASE", releaseSlider);
 
+    filterCutoffSliderAttachment = std::make_unique<SliderAttachment>(valueTreeState, "CUTOFF", filterCutoffSlider);
+    filterResonanceSliderAttachment = std::make_unique<SliderAttachment>(valueTreeState, "RESONANCE", filterResonanceSlider);
+    filterEGAmtSliderAttachment = std::make_unique<SliderAttachment>(valueTreeState, "FILTER_ENV", filterEGAmtSlider);
 
-    setSize (400, 300);
+    LFO1_freqSliderAttachment = std::make_unique<SliderAttachment>(valueTreeState, "LFO1_FREQ", LFO_freqSlider[0]);
+    LFO2_freqSliderAttachment = std::make_unique<SliderAttachment>(valueTreeState, "LFO2_FREQ", LFO_freqSlider[1]);
+    LFO3_freqSliderAttachment = std::make_unique<SliderAttachment>(valueTreeState, "LFO3_FREQ", LFO_freqSlider[2]);
+
+    
+    filterCutoffSlider.setRange(20, 20000, 1);
+    filterCutoffSlider.setSkewFactor(0.3);
+
+    filterEGAmtSlider.setRange(20, 10000, 1);
+    filterEGAmtSlider.setSkewFactor(0.3);
+
+    setSize (480, 400);
 
 
 }
@@ -96,20 +108,13 @@ BinauralSynthesizerAudioProcessorEditor::~BinauralSynthesizerAudioProcessorEdito
 //==============================================================================
 void BinauralSynthesizerAudioProcessorEditor::paint (juce::Graphics& g)
 {
-    // (Our component is opaque, so we must completely fill the background with a solid colour)
 
-
-    g.setColour (juce::Colours::white);
+    g.setColour (juce::Colours::blue);
     g.fillAll();
 }
 
 void BinauralSynthesizerAudioProcessorEditor::resized()
 {
-    // This is generally where you'll want to lay out the positions of any
-    // subcomponents in your editor..
-    azimuthSlider.setBounds(20, 20, 30, 150);
-    elevationSlider.setBounds(50, 20, 30, 150);
-    distanceSlider.setBounds(80, 20, 30, 150);
 
 
     for (int i = 0; i < 3; i++)
@@ -118,24 +123,24 @@ void BinauralSynthesizerAudioProcessorEditor::resized()
         osc_fineSlider[i].setBounds(150, 20, 30, 150);
         osc_shapeSlider[i].setBounds(180, 20, 30, 150);
         osc_mixSlider[i].setBounds(210, 20, 30, 150);
-    }
-    /*
-    osc1_octaveSlider.setBounds(120, 20, 30, 150);
-    osc1_fineSlider.setBounds(150, 20, 30, 150);
-    osc1_shapeSlider.setBounds(180, 20, 30, 150);
-    osc1_mixSlider.setBounds(210, 20, 30, 150);
 
-    osc2_octaveSlider.setBounds(120, 20, 30, 150);
-    osc2_fineSlider.setBounds(150, 20, 30, 150);
-    osc2_shapeSlider.setBounds(180, 20, 30, 150);
-    osc2_mixSlider.setBounds(210, 20, 30, 150);
-    */
+        azimuthSlider[i].setBounds(20, 20, 30, 150);
+        elevationSlider[i].setBounds(50, 20, 30, 150);
+        distanceSlider[i].setBounds(80, 20, 30, 150);
+
+        LFO_freqSlider[i].setBounds(20, 190, 30, 150);
+    }
+
     attackSlider.setBounds(250, 20, 30, 150);
     decaySlider.setBounds(280, 20, 30, 150);
     sustainSlider.setBounds(310, 20, 30, 150);
     releaseSlider.setBounds(340, 20, 30, 150);
 
-    oscMenu.setBounds(20, 20, 50, 20);
+    filterCutoffSlider.setBounds(380, 20, 30, 150);
+    filterResonanceSlider.setBounds(410, 20, 30, 150);
+    filterEGAmtSlider.setBounds(440, 20, 30, 150);
+
+    oscMenu.setBounds(10, 10, 50, 20);
 
 
 }
@@ -149,8 +154,8 @@ void BinauralSynthesizerAudioProcessorEditor::setSlider(juce::Slider& slider, ju
 
     slider.setColour(juce::Slider::textBoxOutlineColourId, juce::Colours::transparentWhite);
     slider.setColour(juce::Slider::thumbColourId, colour);
-    slider.setColour(juce::Slider::backgroundColourId, juce::Colours::black);
-    slider.setColour(juce::Slider::trackColourId, juce::Colours::black);
+    slider.setColour(juce::Slider::backgroundColourId, juce::Colours::white);
+    slider.setColour(juce::Slider::trackColourId, juce::Colours::white);
 }
 
 void BinauralSynthesizerAudioProcessorEditor::comboBoxChanged(juce::ComboBox* comboBox)
@@ -161,13 +166,22 @@ void BinauralSynthesizerAudioProcessorEditor::comboBoxChanged(juce::ComboBox* co
         osc_fineSlider[i].setVisible(false);
         osc_shapeSlider[i].setVisible(false);
         osc_mixSlider[i].setVisible(false);   
+
+        azimuthSlider[i].setVisible(false);
+        elevationSlider[i].setVisible(false);
+        distanceSlider[i].setVisible(false);
+
+        LFO_freqSlider[i].setVisible(false);
     }
     
-
     int itemIndex = oscMenu.getSelectedItemIndex();
     osc_octaveSlider[itemIndex].setVisible(true);
     osc_fineSlider[itemIndex].setVisible(true);
     osc_shapeSlider[itemIndex].setVisible(true);
     osc_mixSlider[itemIndex].setVisible(true);
+    azimuthSlider[itemIndex].setVisible(true);
+    elevationSlider[itemIndex].setVisible(true);
+    distanceSlider[itemIndex].setVisible(true);
+    LFO_freqSlider[itemIndex].setVisible(true);
 
 }
