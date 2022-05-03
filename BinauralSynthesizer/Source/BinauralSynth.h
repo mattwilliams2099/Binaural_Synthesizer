@@ -13,6 +13,7 @@ private:
     void handleMidiEvent(const juce::MidiMessage& midiEvent);
     void render(juce::AudioBuffer<float>& buffer, int startSample, int endSample);
     int activeNoteID[NUM_VOICES] = { 0, 0 };
+    bool clockwise[3];
 public:
 
     BinauralSynthClass(float samplerate);
@@ -71,12 +72,24 @@ public:
         azimuthLFO[oscNumber].setRange(newValue);
     }
 
+    void setDirection(bool isClockwise, int oscNumber)
+    {
+        clockwise[oscNumber] = isClockwise;
+    }
+
+    bool isClockwise(int oscNumber)
+    {
+        return clockwise[oscNumber];
+    }
+
     void setStaticLFO(bool isStatic, int oscNumber)
     {
         if (isStatic == true)
             azimuthLFO[oscNumber].setShape(LFOClass::triangle);
-        else
+        else if (clockwise[oscNumber] == true)
             azimuthLFO[oscNumber].setShape(LFOClass::sawDown);
+        else
+            azimuthLFO[oscNumber].setShape(LFOClass::sawUp);
     }
 
     void setFilter (float newCutoff, float newResonance)

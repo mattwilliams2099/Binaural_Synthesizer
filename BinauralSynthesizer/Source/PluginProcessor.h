@@ -54,11 +54,11 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
     
-
+    BinauralSynthClass synthesizer;
 
 private:
     //==============================================================================
-    BinauralSynthClass synthesizer;
+
     juce::AudioProcessorValueTreeState parameters;
 
     std::atomic<float>* osc1_azimuthParameter = nullptr;
@@ -108,6 +108,12 @@ private:
     std::atomic<float>* osc1_azimuthLockParameter = nullptr;
     std::atomic<float>* osc2_azimuthLockParameter = nullptr;
     std::atomic<float>* osc3_azimuthLockParameter = nullptr;
+
+    std::atomic<float>* osc1_directionParameter = nullptr;
+    std::atomic<float>* osc2_directionParameter = nullptr;
+    std::atomic<float>* osc3_directionParameter = nullptr;
+
+
 
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (BinauralSynthesizerAudioProcessor)

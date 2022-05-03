@@ -71,6 +71,11 @@ BinauralSynthesizerAudioProcessor::BinauralSynthesizerAudioProcessor()
                                 std::make_unique<juce::AudioParameterBool>  ("OSC2_AZ_LOCK","Osc 2 Azimuth Lock", true),
                                 std::make_unique<juce::AudioParameterBool>  ("OSC3_AZ_LOCK","Osc 3 Azimuth Lock", true),
 
+                                std::make_unique<juce::AudioParameterBool>("OSC1_DIR", "Osc 1 Direction", true),
+                                std::make_unique<juce::AudioParameterBool>("OSC2_DIR", "Osc 2 Direction", true),
+                                std::make_unique<juce::AudioParameterBool>("OSC3_DIR", "Osc 3 Direction", true),
+
+
 
 
                            })
@@ -124,6 +129,9 @@ BinauralSynthesizerAudioProcessor::BinauralSynthesizerAudioProcessor()
     osc2_azimuthLockParameter = parameters.getRawParameterValue("OSC2_AZ_LOCK");
     osc3_azimuthLockParameter = parameters.getRawParameterValue("OSC3_AZ_LOCK");
      
+    osc1_directionParameter = parameters.getRawParameterValue("OSC1_DIR");
+    osc2_directionParameter = parameters.getRawParameterValue("OSC2_DIR");
+    osc3_directionParameter = parameters.getRawParameterValue("OSC3_DIR");
 
 
 }
@@ -249,6 +257,10 @@ void BinauralSynthesizerAudioProcessor::prepareToPlay (double sampleRate, int sa
     synthesizer.setLFOAmt(*LFO2_amtParameter, 1);
     synthesizer.setLFOAmt(*LFO3_amtParameter, 2);
 
+    synthesizer.setDirection(*osc1_directionParameter, 0);
+    synthesizer.setDirection(*osc2_directionParameter, 1);
+    synthesizer.setDirection(*osc3_directionParameter, 2);
+
     synthesizer.setStaticLFO(*osc1_azimuthLockParameter, 0);
     synthesizer.setStaticLFO(*osc2_azimuthLockParameter, 1);
     synthesizer.setStaticLFO(*osc3_azimuthLockParameter, 2);
@@ -351,6 +363,10 @@ void BinauralSynthesizerAudioProcessor::processBlock (juce::AudioBuffer<float>& 
     synthesizer.setLFOFreq(*LFO1_freqParameter, 0);
     synthesizer.setLFOFreq(*LFO2_freqParameter, 1);
     synthesizer.setLFOFreq(*LFO3_freqParameter, 2);
+
+    synthesizer.setDirection(*osc1_directionParameter, 0);
+    synthesizer.setDirection(*osc2_directionParameter, 1);
+    synthesizer.setDirection(*osc3_directionParameter, 2);
 
     synthesizer.setStaticLFO(*osc1_azimuthLockParameter, 0);
     synthesizer.setStaticLFO(*osc2_azimuthLockParameter, 1);

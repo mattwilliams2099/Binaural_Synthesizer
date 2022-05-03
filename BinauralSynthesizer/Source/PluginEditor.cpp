@@ -16,31 +16,87 @@ BinauralSynthesizerAudioProcessorEditor::BinauralSynthesizerAudioProcessorEditor
 
     for (int i = 0; i < 3; i++)
     {
-        setSlider(osc_octaveSlider[i], juce::Colours::whitesmoke, juce::Slider::SliderStyle::LinearVertical);
-        setSlider(osc_fineSlider[i], juce::Colours::whitesmoke, juce::Slider::SliderStyle::LinearVertical);
-        setSlider(osc_shapeSlider[i], juce::Colours::whitesmoke, juce::Slider::SliderStyle::LinearVertical);
-        setSlider(osc_mixSlider[i], juce::Colours::whitesmoke, juce::Slider::SliderStyle::LinearVertical);
+        setSlider(osc_octaveSlider[i], juce::Colours::black, juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, juce::Slider::NoTextBox);
+        setSlider(osc_fineSlider[i], juce::Colours::black, juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, juce::Slider::NoTextBox);
+        setSlider(osc_shapeSlider[i], juce::Colours::black, juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, juce::Slider::NoTextBox);
+        setSlider(osc_mixSlider[i], juce::Colours::black, juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag, juce::Slider::NoTextBox);
 
-        setSlider(azimuthSlider[i], juce::Colours::whitesmoke, juce::Slider::SliderStyle::LinearVertical);
-        setSlider(elevationSlider[i], juce::Colours::whitesmoke, juce::Slider::SliderStyle::LinearVertical);
-        setSlider(distanceSlider[i], juce::Colours::whitesmoke, juce::Slider::SliderStyle::LinearVertical);
+        setSlider(azimuthSlider[i], juce::Colours::black, juce::Slider::SliderStyle::LinearHorizontal);
+        setSlider(elevationSlider[i], juce::Colours::black, juce::Slider::SliderStyle::LinearVertical);
+        setSlider(distanceSlider[i], juce::Colours::black, juce::Slider::SliderStyle::LinearVertical);
         
-        setSlider(LFO_freqSlider[i], juce::Colours::whitesmoke, juce::Slider::SliderStyle::LinearVertical);
-        setSlider(LFO_amtSlider[i], juce::Colours::whitesmoke, juce::Slider::SliderStyle::LinearVertical);
+        setSlider(LFO_freqSlider[i], juce::Colours::black, juce::Slider::SliderStyle::LinearVertical);
+        setSlider(LFO_amtSlider[i], juce::Colours::black, juce::Slider::SliderStyle::LinearVertical);
 
         addAndMakeVisible(staticAzimuthLFOButton[i]);
-        staticAzimuthLFOButton[i].setButtonText("Static LFO Range");
+        staticAzimuthLFOButton[i].setButtonText("STATIC LFO RANGE");
         staticAzimuthLFOButton[i].addListener(this);
+        staticAzimuthLFOButton[i].setColour(juce::ToggleButton::textColourId, juce::Colours::grey);
+        staticAzimuthLFOButton[i].setColour(juce::ToggleButton::tickColourId, juce::Colours::grey);
+        staticAzimuthLFOButton[i].setColour(juce::ToggleButton::tickDisabledColourId , juce::Colours::grey);
+
+        addAndMakeVisible(directionButton[i]);
+        directionButton[i].setButtonText("CLOCKWISE");
+        directionButton[i].addListener(this);
+        directionButton[i].setClickingTogglesState(true);
+        directionButton[i].setColour(juce::TextButton::buttonOnColourId, juce::Colours::darkgrey);
+        directionButton[i].setColour(juce::TextButton::buttonColourId, juce::Colours::darkgrey);
+        directionButton[i].setColour(juce::TextButton::ColourIds::textColourOffId, juce::Colours::whitesmoke);
+        directionButton[i].setColour(juce::TextButton::ColourIds::textColourOnId, juce::Colours::whitesmoke);
+
+
+
+        setLabel(oscLabel[i]);
+        setLabel(filterLabel[i]);
+
     }
 
-    setSlider(attackSlider, juce::Colours::whitesmoke, juce::Slider::SliderStyle::LinearVertical);
-    setSlider(decaySlider, juce::Colours::whitesmoke, juce::Slider::SliderStyle::LinearVertical);
-    setSlider(sustainSlider, juce::Colours::whitesmoke, juce::Slider::SliderStyle::LinearVertical);
-    setSlider(releaseSlider, juce::Colours::whitesmoke, juce::Slider::SliderStyle::LinearVertical);
+    for (int i = 0; i < 4; i++)
+    {
+        setLabel(oscParamLabel[i]);
+        setLabel(adsrLabel[i]);
+    }
 
-    setSlider(filterCutoffSlider, juce::Colours::whitesmoke, juce::Slider::SliderStyle::LinearVertical);
-    setSlider(filterResonanceSlider, juce::Colours::whitesmoke, juce::Slider::SliderStyle::LinearVertical);
-    setSlider(filterEGAmtSlider, juce::Colours::whitesmoke, juce::Slider::SliderStyle::LinearVertical);
+    setLabel(oscTitle, 10);
+    setLabel(filterTitle, 10);
+    setLabel(envelopeTitle, 10);
+
+    oscTitle.setText("OSCILLATORS", juce::NotificationType::dontSendNotification);
+    filterTitle.setText("LOW PASS FILTER", juce::NotificationType::dontSendNotification);
+    envelopeTitle.setText("ENVELOPE", juce::NotificationType::dontSendNotification);
+
+    oscLabel[0].setText("OSC 1", juce::NotificationType::dontSendNotification);
+    oscLabel[1].setText("OSC 2", juce::NotificationType::dontSendNotification);
+    oscLabel[2].setText("OSC 3", juce::NotificationType::dontSendNotification);
+
+    filterLabel[0].setText("CUTOFF", juce::NotificationType::dontSendNotification);
+    filterLabel[1].setText("RES", juce::NotificationType::dontSendNotification);
+    filterLabel[2].setText("EG MOD", juce::NotificationType::dontSendNotification);
+
+    oscParamLabel[0].setText("SHAPE", juce::NotificationType::dontSendNotification);
+    oscParamLabel[1].setText("OCTAVE", juce::NotificationType::dontSendNotification);
+    oscParamLabel[2].setText("FINE", juce::NotificationType::dontSendNotification);
+    oscParamLabel[3].setText("MIX", juce::NotificationType::dontSendNotification);
+
+    adsrLabel[0].setText("ATTACK", juce::NotificationType::dontSendNotification);
+    adsrLabel[1].setText("DECAY", juce::NotificationType::dontSendNotification);
+    adsrLabel[2].setText("SUSTAIN", juce::NotificationType::dontSendNotification);
+    adsrLabel[3].setText("RELEASE", juce::NotificationType::dontSendNotification);
+
+
+
+
+
+
+
+    setSlider(attackSlider, juce::Colours::black, juce::Slider::SliderStyle::LinearVertical, juce::Slider::NoTextBox);
+    setSlider(decaySlider, juce::Colours::black, juce::Slider::SliderStyle::LinearVertical, juce::Slider::NoTextBox);
+    setSlider(sustainSlider, juce::Colours::black, juce::Slider::SliderStyle::LinearVertical, juce::Slider::NoTextBox);
+    setSlider(releaseSlider, juce::Colours::black, juce::Slider::SliderStyle::LinearVertical, juce::Slider::NoTextBox);
+
+    setSlider(filterCutoffSlider, juce::Colours::black, juce::Slider::SliderStyle::LinearVertical, juce::Slider::NoTextBox);
+    setSlider(filterResonanceSlider, juce::Colours::black, juce::Slider::SliderStyle::LinearVertical, juce::Slider::NoTextBox);
+    setSlider(filterEGAmtSlider, juce::Colours::black, juce::Slider::SliderStyle::LinearVertical, juce::Slider::NoTextBox);
 
 
     addAndMakeVisible(oscMenu);
@@ -52,6 +108,9 @@ BinauralSynthesizerAudioProcessorEditor::BinauralSynthesizerAudioProcessorEditor
     oscMenu.setColour(juce::ComboBox::arrowColourId, juce::Colours::blue);
     oscMenu.setColour(juce::ComboBox::outlineColourId, juce::Colours::blue);
 
+
+
+    //oscLabelTitle.attachToComponent(osc_fineSlider, true);
 
     osc1_azimuthSliderAttachment = std::make_unique<SliderAttachment>(valueTreeState, "OSC1_AZ", azimuthSlider[0]);
     osc1_elevationSliderAttachment = std::make_unique<SliderAttachment>(valueTreeState, "OSC1_EL", elevationSlider[0]);
@@ -103,6 +162,12 @@ BinauralSynthesizerAudioProcessorEditor::BinauralSynthesizerAudioProcessorEditor
     osc2_staticAzimuthLFOButtonAttachment = std::make_unique<ButtonAttachment>(valueTreeState, "OSC2_AZ_LOCK", staticAzimuthLFOButton[1]);
     osc3_staticAzimuthLFOButtonAttachment = std::make_unique<ButtonAttachment>(valueTreeState, "OSC3_AZ_LOCK", staticAzimuthLFOButton[2]);
 
+    osc1_directionButtonAttachment = std::make_unique<ButtonAttachment>(valueTreeState, "OSC1_DIR", directionButton[0]);
+    osc2_directionButtonAttachment = std::make_unique<ButtonAttachment>(valueTreeState, "OSC1_DIR", directionButton[1]);
+    osc3_directionButtonAttachment = std::make_unique<ButtonAttachment>(valueTreeState, "OSC1_DIR", directionButton[2]);
+  
+
+
 
 
     
@@ -114,7 +179,7 @@ BinauralSynthesizerAudioProcessorEditor::BinauralSynthesizerAudioProcessorEditor
 
 
 
-    setSize (480, 400);
+    setSize (505, 400);
 
 
 }
@@ -127,48 +192,118 @@ BinauralSynthesizerAudioProcessorEditor::~BinauralSynthesizerAudioProcessorEdito
 void BinauralSynthesizerAudioProcessorEditor::paint (juce::Graphics& g)
 {
 
-    g.setColour (juce::Colours::blue);
+    g.setColour (juce::Colours::whitesmoke);
     g.fillAll();
+    g.setColour(juce::Colours::lightgrey);
+    g.drawRect(20, 40, 200, 51);
+    g.drawRect(20, 90, 200, 51);
+    g.drawRect(20, 140, 200, 50);
+    g.drawRect(20, 40, 51, 150);
+    g.drawRect(70, 40, 51, 150);
+    g.drawRect(120, 40, 51, 150);
+    g.drawRect(170, 40, 50, 150);
+
+    g.drawRect(230, 40, 36, 150);
+    g.drawRect(265, 40, 36, 150);
+    g.drawRect(300, 40, 35, 150);
+
+    g.drawRect(345, 40, 36, 150);
+    g.drawRect(380, 40, 36, 150);
+    g.drawRect(415, 40, 36, 150);
+    g.drawRect(450, 40, 35, 150);
+
+
 }
 
 void BinauralSynthesizerAudioProcessorEditor::resized()
 {
 
-
+    const int row_1 = 40;
+    const int row_2 = 240;
+    const int sl_wid = 35;
+    const int sl_hi = 150;
+    const int rot_size = 50;
+    const int osc_y[3] = { 40, 90, 140 };
     for (int i = 0; i < 3; i++)
     {
-        osc_octaveSlider[i].setBounds(120, 20, 30, 150);
-        osc_fineSlider[i].setBounds(150, 20, 30, 150);
-        osc_shapeSlider[i].setBounds(180, 20, 30, 150);
-        osc_mixSlider[i].setBounds(210, 20, 30, 150);
+        
+        osc_shapeSlider[i].setBounds        (20,  osc_y[i], rot_size, rot_size);        
+        osc_octaveSlider[i].setBounds       (70,  osc_y[i], rot_size, rot_size);
+        osc_fineSlider[i].setBounds         (120, osc_y[i], rot_size, rot_size);
+        osc_mixSlider[i].setBounds          (170, osc_y[i], rot_size, rot_size);
 
-        azimuthSlider[i].setBounds(20, 20, 30, 150);
-        elevationSlider[i].setBounds(50, 20, 30, 150);
-        distanceSlider[i].setBounds(80, 20, 30, 150);
+        azimuthSlider[i].setBounds          (20,        210, sl_hi, sl_wid);
+        elevationSlider[i].setBounds        (20,        row_2, sl_wid, sl_hi);
+        distanceSlider[i].setBounds         (50,        row_2, sl_wid, sl_hi);
 
-        LFO_freqSlider[i].setBounds(20, 190, 30, 150);
-        LFO_amtSlider[i].setBounds(130, 190, 30, 150);
+        LFO_freqSlider[i].setBounds         (90,        row_2, sl_wid, sl_hi);
+        LFO_amtSlider[i].setBounds          (120,       row_2,      sl_wid, sl_hi);
 
-        staticAzimuthLFOButton[i].setBounds(50, 190, 80, 30);
+        staticAzimuthLFOButton[i].setBounds (180,        row_2,      80,         30);
+        directionButton[i].setBounds        (180,        row_2 + 40, 60,         40);
+
+        oscLabel[i].setSize(51, 10);
+        oscLabel[i].setCentrePosition(0, 0);
+        oscLabel[i].setTransform(juce::AffineTransform::rotation(3 * (3.1415926 / 2)));
+
+        //filterLabel[i].setSize(35, 10);
+
     }
 
-    attackSlider.setBounds(250, 20, 30, 150);
-    decaySlider.setBounds(280, 20, 30, 150);
-    sustainSlider.setBounds(310, 20, 30, 150);
-    releaseSlider.setBounds(340, 20, 30, 150);
+    for (int i = 0; i < 4; i++)
+    {
+        //oscParamLabel[i].setSize(51, 10);
+        //adsrLabel[i].setSize(30, 10);
+    }
 
-    filterCutoffSlider.setBounds(380, 20, 30, 150);
-    filterResonanceSlider.setBounds(410, 20, 30, 150);
-    filterEGAmtSlider.setBounds(440, 20, 30, 150);
+    filterCutoffSlider.setBounds            (230,       row_1, sl_wid, sl_hi);
+    filterResonanceSlider.setBounds         (265,       row_1, sl_wid, sl_hi);
+    filterEGAmtSlider.setBounds             (300,       row_1, sl_wid, sl_hi);
 
-    oscMenu.setBounds(10, 10, 50, 20);
+    attackSlider.setBounds                  (345,       row_1, sl_wid, sl_hi);
+    decaySlider.setBounds                   (380,       row_1, sl_wid, sl_hi);
+    sustainSlider.setBounds                 (415,       row_1, sl_wid, sl_hi);
+    releaseSlider.setBounds                 (450,     row_1, sl_wid, sl_hi);
+
+
+
+    oscMenu.setBounds                       (20,        200,         50,         20);
+
+
+    oscLabel[0].setCentrePosition(15, 66);
+    oscLabel[1].setCentrePosition(15, 116);
+    oscLabel[2].setCentrePosition(15, 166);
+
+    oscParamLabel[0].setBounds(20, row_1 - 10, 51, 10);
+    oscParamLabel[1].setBounds(70, row_1 - 10, 51, 10);
+    oscParamLabel[2].setBounds(120, row_1 - 10, 51, 10);
+    oscParamLabel[3].setBounds(170, row_1 - 10, 50, 10);
+
+    filterLabel[0].setBounds(230, row_1 - 10, 36, 10);
+    filterLabel[1].setBounds(265, row_1 - 10, 36, 10);
+    filterLabel[2].setBounds(300, row_1 - 10, 35, 10);
+
+    adsrLabel[0].setBounds(345, row_1 - 10, 36, 10);
+    adsrLabel[1].setBounds(380, row_1 - 10, 36, 10);
+    adsrLabel[2].setBounds(415, row_1 - 10, 36, 10);
+    adsrLabel[3].setBounds(450, row_1 - 10, 36, 10);
+
+    oscTitle.setBounds(20, 20, 200, 10);
+    filterTitle.setBounds(230, 20, 105, 10);
+    envelopeTitle.setBounds(345, 20, 140, 10);
+
+
+
+
+
+
 
     for (int i = 1; i < 3; i++)
     {
-        osc_octaveSlider[i].setVisible(false);
-        osc_fineSlider[i].setVisible(false);
-        osc_shapeSlider[i].setVisible(false);
-        osc_mixSlider[i].setVisible(false);
+        //osc_octaveSlider[i].setVisible(false);
+        //osc_fineSlider[i].setVisible(false);
+        //osc_shapeSlider[i].setVisible(false);
+        //osc_mixSlider[i].setVisible(false);
 
         azimuthSlider[i].setVisible(false);
         elevationSlider[i].setVisible(false);
@@ -178,30 +313,44 @@ void BinauralSynthesizerAudioProcessorEditor::resized()
         LFO_amtSlider[i].setVisible(false);
 
         staticAzimuthLFOButton[i].setVisible(false);
+        directionButton[i].setVisible(false);
     }
 }
 
-void BinauralSynthesizerAudioProcessorEditor::setSlider(juce::Slider& slider, juce::Colour colour, juce::Slider::SliderStyle style)
+void BinauralSynthesizerAudioProcessorEditor::setSlider(juce::Slider& slider, juce::Colour colour, juce::Slider::SliderStyle style, juce::Slider::TextEntryBoxPosition textBox)
 {
     addAndMakeVisible(slider);
     slider.setSliderStyle(style);
     //slider.setTextBoxStyle(juce::Slider::NoTextBox, false, 50, 10);
-    slider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 10);
+    slider.setTextBoxStyle(textBox, false, 50, 10);
 
     slider.setColour(juce::Slider::textBoxOutlineColourId, juce::Colours::transparentWhite);
     slider.setColour(juce::Slider::thumbColourId, colour);
-    slider.setColour(juce::Slider::backgroundColourId, juce::Colours::white);
-    slider.setColour(juce::Slider::trackColourId, juce::Colours::white);
+    slider.setColour(juce::Slider::backgroundColourId, juce::Colours::darkgrey);
+    slider.setColour(juce::Slider::trackColourId, juce::Colours::darkgrey);
+    slider.setColour(juce::Slider::rotarySliderFillColourId, juce::Colours::darkgrey);
+    slider.setColour(juce::Slider::rotarySliderOutlineColourId, juce::Colours::darkgrey);
+
+}
+
+void BinauralSynthesizerAudioProcessorEditor::setLabel(juce::Label& label, int fontSize)
+{
+    addAndMakeVisible(label);
+    label.setColour(juce::Label::textColourId, juce::Colours::whitesmoke);
+    label.setColour(juce::Label::backgroundColourId, juce::Colours::grey);
+    label.setColour(juce::Label::outlineColourId, juce::Colours::whitesmoke);
+    label.setJustificationType(juce::Justification::centred);
+    label.setFont(fontSize);
 }
 
 void BinauralSynthesizerAudioProcessorEditor::comboBoxChanged(juce::ComboBox* comboBox)
 {
     for(int i = 0; i < 3; i++)
     {
-        osc_octaveSlider[i].setVisible(false);
-        osc_fineSlider[i].setVisible(false);
-        osc_shapeSlider[i].setVisible(false);
-        osc_mixSlider[i].setVisible(false);   
+        //osc_octaveSlider[i].setVisible(false);
+        //osc_fineSlider[i].setVisible(false);
+        //osc_shapeSlider[i].setVisible(false);
+        //osc_mixSlider[i].setVisible(false);   
 
         azimuthSlider[i].setVisible(false);
         elevationSlider[i].setVisible(false);
@@ -211,22 +360,21 @@ void BinauralSynthesizerAudioProcessorEditor::comboBoxChanged(juce::ComboBox* co
         LFO_amtSlider[i].setVisible(false);
 
         staticAzimuthLFOButton[i].setVisible(false);
-
+        directionButton[i].setVisible(false);
     }
     
     int itemIndex = oscMenu.getSelectedItemIndex();
     osc_octaveSlider[itemIndex].setVisible(true);
     osc_fineSlider[itemIndex].setVisible(true);
     osc_shapeSlider[itemIndex].setVisible(true);
-    osc_mixSlider[itemIndex].setVisible(true);
+    //osc_mixSlider[itemIndex].setVisible(true);
     azimuthSlider[itemIndex].setVisible(true);
     elevationSlider[itemIndex].setVisible(true);
     distanceSlider[itemIndex].setVisible(true);
     LFO_freqSlider[itemIndex].setVisible(true);
     staticAzimuthLFOButton[itemIndex].getToggleState() == true ? LFO_amtSlider[itemIndex].setVisible(true) : LFO_amtSlider[itemIndex].setVisible(false);
+    staticAzimuthLFOButton[itemIndex].getToggleState() == false ? directionButton[itemIndex].setVisible(true) : directionButton[itemIndex].setVisible(false);
     staticAzimuthLFOButton[itemIndex].setVisible(true);
-
-
 }
 
 
@@ -237,17 +385,30 @@ void BinauralSynthesizerAudioProcessorEditor::buttonStateChanged(juce::Button* b
 
 void BinauralSynthesizerAudioProcessorEditor::buttonClicked(juce::Button* button)
 {
+    
     for (int i = 0; i < 3; i++)
     {
         if (button == &staticAzimuthLFOButton[i] && staticAzimuthLFOButton[i].getToggleState() == true)
         {
             LFO_amtSlider[i].setVisible(true);
+            directionButton[i].setVisible(false);
             break;
         }
         else if (button == &staticAzimuthLFOButton[i] && staticAzimuthLFOButton[i].getToggleState() == false)
         {
             LFO_amtSlider[i].setValue(359);
             LFO_amtSlider[i].setVisible(false);
+            directionButton[i].setVisible(true);
+            break;
+        }
+        else if (button == &directionButton[i] && directionButton[i].getToggleState() == true)
+        {
+            directionButton[i].setButtonText("ANTI-CLOCKWISE");
+            break;
+        }
+        else if (button == &directionButton[i] && directionButton[i].getToggleState() == false)
+        {
+            directionButton[i].setButtonText("CLOCKWISE");
             break;
         }
     }

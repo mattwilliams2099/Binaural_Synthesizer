@@ -7,9 +7,12 @@
 */
 
 #pragma once
+#define _USE_MATH_DEFINES
 
 #include <JuceHeader.h>
+#include <cmath>
 #include "PluginProcessor.h"
+
 
 typedef juce::AudioProcessorValueTreeState::SliderAttachment SliderAttachment;
 typedef juce::AudioProcessorValueTreeState::ButtonAttachment ButtonAttachment;
@@ -69,10 +72,28 @@ private:
     juce::Slider filterEGAmtSlider;
 
     juce::ToggleButton staticAzimuthLFOButton[3];
+    juce::TextButton directionButton[3];
+
+    juce::Label oscTitle;
+    juce::Label filterTitle;
+    juce::Label envelopeTitle;
+
+    juce::Label oscLabel[3];
+    juce::Label oscParamLabel[4];
+    juce::Label adsrLabel[4];
+
+
+    juce::Label filterLabel[3];
+
+
 
     std::unique_ptr<ButtonAttachment> osc1_staticAzimuthLFOButtonAttachment;
     std::unique_ptr<ButtonAttachment> osc2_staticAzimuthLFOButtonAttachment;
     std::unique_ptr<ButtonAttachment> osc3_staticAzimuthLFOButtonAttachment;
+
+    std::unique_ptr<ButtonAttachment> osc1_directionButtonAttachment;
+    std::unique_ptr<ButtonAttachment> osc2_directionButtonAttachment;
+    std::unique_ptr<ButtonAttachment> osc3_directionButtonAttachment;
 
     juce::ComboBox oscMenu;
 
@@ -121,7 +142,9 @@ private:
     std::unique_ptr<SliderAttachment> LFO3_amtSliderAttachment;
 
 
-    void setSlider(juce::Slider& slider, juce::Colour colour, juce::Slider::SliderStyle style);
+    void setSlider(juce::Slider& slider, juce::Colour colour, juce::Slider::SliderStyle style, juce::Slider::TextEntryBoxPosition textBox = juce::Slider::TextBoxBelow);
+    void setLabel(juce::Label& label, int fontSize = 8);
+
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (BinauralSynthesizerAudioProcessorEditor)
 };
