@@ -7,9 +7,12 @@
 
   ==============================================================================
 */
-
+#define _USE_MATH_DEFINES
 #pragma once
 #include <iostream>
+#include <cmath>
+
+
 #define WAVETABLE_LENGTH 64
 
 
@@ -19,7 +22,7 @@ public:
     float process();
     enum shape : unsigned int
     {
-        sine, sawUp
+        sine, sawUp, sawDown, triangle
     };
     void setRange(float newRange);
     void setOffset(float newOffset);
@@ -29,6 +32,7 @@ public:
 private:
     float wavetable [WAVETABLE_LENGTH];
     float linearInterpolate();
+    void invert();
     int LFOwave = 0;
     float index = 0;
     float indexIncrement = 0;

@@ -28,11 +28,42 @@ void LFOClass::setShape(LFOClass::shape wave)
         output = offset - (range / 2);
         for (int i = 0; i < WAVETABLE_LENGTH; i++)
         {
-            output += (range / WAVETABLE_LENGTH);// +offset);
+            output += (range / static_cast<float>(WAVETABLE_LENGTH));
             wavetable[i] = output;
         }
         break;
+    case sawDown:
+        LFOwave = sawDown;
+        output = offset + (range / 2);
+        for (int i = 0; i < WAVETABLE_LENGTH; i++)
+        {
+            output -= (range / static_cast<float>(WAVETABLE_LENGTH));
+            wavetable[i] = output;
+        }
+        break;
+
+    case triangle:
+        LFOwave = triangle;
+        output = offset;
+        for (int i = 0; i < WAVETABLE_LENGTH; i++)
+        {
+            wavetable[i] = output;
+            if (i < WAVETABLE_LENGTH / 4 || i >= (WAVETABLE_LENGTH / 4) * 3)
+                output += 2.0f * range / static_cast<float>(WAVETABLE_LENGTH);
+            else
+                output -= 2.0f * range / static_cast<float>(WAVETABLE_LENGTH);
+        }
+        break;
+
+    case sine:
+        for (int i = 0; i < WAVETABLE_LENGTH; i++)
+        {
+            wavetable[i] = (range / 2) * (sin((2 * M_PI * static_cast<float>(i)) / static_cast<float>(WAVETABLE_LENGTH))) + offset;
+        }
+        break;
+
     }
+
 }
 
 float LFOClass::linearInterpolate()
@@ -41,7 +72,6 @@ float LFOClass::linearInterpolate()
     const auto nextIndex = (truncatedIndex + 1) % static_cast<int>(WAVETABLE_LENGTH);
     const auto nextIndexWeight = index - static_cast<float>(truncatedIndex);
     const auto truncatedIndexWeight = 1.0f - nextIndexWeight;
-
     return truncatedIndexWeight * wavetable[truncatedIndex] + nextIndexWeight * wavetable[nextIndex];
 }
 

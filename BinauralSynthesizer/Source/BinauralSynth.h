@@ -25,6 +25,11 @@ public:
         voices.setAzimuth(newValue, oscNumber);
     }
 
+    void setLFOOffset(int newValue, int oscNumber)
+    {
+        azimuthLFO[oscNumber].setOffset(newValue);
+
+    }
     void setElevation(int newValue, int oscNumber)
     {
         voices.setElevation(newValue, oscNumber);
@@ -59,6 +64,19 @@ public:
     void setLFOFreq(float newValue, int oscNumber)
     {
         azimuthLFO[oscNumber].setFrequency(newValue);
+    }
+
+    void setLFOAmt(float newValue, int oscNumber)
+    {
+        azimuthLFO[oscNumber].setRange(newValue);
+    }
+
+    void setStaticLFO(bool isStatic, int oscNumber)
+    {
+        if (isStatic == true)
+            azimuthLFO[oscNumber].setShape(LFOClass::triangle);
+        else
+            azimuthLFO[oscNumber].setShape(LFOClass::sawDown);
     }
 
     void setFilter (float newCutoff, float newResonance)

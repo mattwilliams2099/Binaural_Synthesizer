@@ -26,7 +26,11 @@ BinauralSynthesizerAudioProcessorEditor::BinauralSynthesizerAudioProcessorEditor
         setSlider(distanceSlider[i], juce::Colours::whitesmoke, juce::Slider::SliderStyle::LinearVertical);
         
         setSlider(LFO_freqSlider[i], juce::Colours::whitesmoke, juce::Slider::SliderStyle::LinearVertical);
+        setSlider(LFO_amtSlider[i], juce::Colours::whitesmoke, juce::Slider::SliderStyle::LinearVertical);
 
+        addAndMakeVisible(staticAzimuthLFOButton[i]);
+        staticAzimuthLFOButton[i].setButtonText("Static LFO Range");
+        staticAzimuthLFOButton[i].addListener(this);
     }
 
     setSlider(attackSlider, juce::Colours::whitesmoke, juce::Slider::SliderStyle::LinearVertical);
@@ -38,6 +42,7 @@ BinauralSynthesizerAudioProcessorEditor::BinauralSynthesizerAudioProcessorEditor
     setSlider(filterResonanceSlider, juce::Colours::whitesmoke, juce::Slider::SliderStyle::LinearVertical);
     setSlider(filterEGAmtSlider, juce::Colours::whitesmoke, juce::Slider::SliderStyle::LinearVertical);
 
+
     addAndMakeVisible(oscMenu);
     oscMenu.addItemList({ "1", "2", "3" }, 1);
     oscMenu.addListener(this);
@@ -46,7 +51,6 @@ BinauralSynthesizerAudioProcessorEditor::BinauralSynthesizerAudioProcessorEditor
     oscMenu.setColour(juce::ComboBox::textColourId, juce::Colours::blue);
     oscMenu.setColour(juce::ComboBox::arrowColourId, juce::Colours::blue);
     oscMenu.setColour(juce::ComboBox::outlineColourId, juce::Colours::blue);
-    
 
 
     osc1_azimuthSliderAttachment = std::make_unique<SliderAttachment>(valueTreeState, "OSC1_AZ", azimuthSlider[0]);
@@ -89,12 +93,26 @@ BinauralSynthesizerAudioProcessorEditor::BinauralSynthesizerAudioProcessorEditor
     LFO2_freqSliderAttachment = std::make_unique<SliderAttachment>(valueTreeState, "LFO2_FREQ", LFO_freqSlider[1]);
     LFO3_freqSliderAttachment = std::make_unique<SliderAttachment>(valueTreeState, "LFO3_FREQ", LFO_freqSlider[2]);
 
+    LFO1_amtSliderAttachment = std::make_unique<SliderAttachment>(valueTreeState, "LFO1_AMT", LFO_amtSlider[0]);
+    LFO2_amtSliderAttachment = std::make_unique<SliderAttachment>(valueTreeState, "LFO2_AMT", LFO_amtSlider[1]);
+    LFO3_amtSliderAttachment = std::make_unique<SliderAttachment>(valueTreeState, "LFO3_AMT", LFO_amtSlider[2]);
+
+
+
+    osc1_staticAzimuthLFOButtonAttachment = std::make_unique<ButtonAttachment>(valueTreeState, "OSC1_AZ_LOCK", staticAzimuthLFOButton[0]);
+    osc2_staticAzimuthLFOButtonAttachment = std::make_unique<ButtonAttachment>(valueTreeState, "OSC2_AZ_LOCK", staticAzimuthLFOButton[1]);
+    osc3_staticAzimuthLFOButtonAttachment = std::make_unique<ButtonAttachment>(valueTreeState, "OSC3_AZ_LOCK", staticAzimuthLFOButton[2]);
+
+
+
     
     filterCutoffSlider.setRange(20, 20000, 1);
     filterCutoffSlider.setSkewFactor(0.3);
 
     filterEGAmtSlider.setRange(20, 10000, 1);
     filterEGAmtSlider.setSkewFactor(0.3);
+
+
 
     setSize (480, 400);
 
@@ -129,6 +147,9 @@ void BinauralSynthesizerAudioProcessorEditor::resized()
         distanceSlider[i].setBounds(80, 20, 30, 150);
 
         LFO_freqSlider[i].setBounds(20, 190, 30, 150);
+        LFO_amtSlider[i].setBounds(130, 190, 30, 150);
+
+        staticAzimuthLFOButton[i].setBounds(50, 190, 80, 30);
     }
 
     attackSlider.setBounds(250, 20, 30, 150);
@@ -142,7 +163,22 @@ void BinauralSynthesizerAudioProcessorEditor::resized()
 
     oscMenu.setBounds(10, 10, 50, 20);
 
+    for (int i = 1; i < 3; i++)
+    {
+        osc_octaveSlider[i].setVisible(false);
+        osc_fineSlider[i].setVisible(false);
+        osc_shapeSlider[i].setVisible(false);
+        osc_mixSlider[i].setVisible(false);
 
+        azimuthSlider[i].setVisible(false);
+        elevationSlider[i].setVisible(false);
+        distanceSlider[i].setVisible(false);
+
+        LFO_freqSlider[i].setVisible(false);
+        LFO_amtSlider[i].setVisible(false);
+
+        staticAzimuthLFOButton[i].setVisible(false);
+    }
 }
 
 void BinauralSynthesizerAudioProcessorEditor::setSlider(juce::Slider& slider, juce::Colour colour, juce::Slider::SliderStyle style)
@@ -172,6 +208,10 @@ void BinauralSynthesizerAudioProcessorEditor::comboBoxChanged(juce::ComboBox* co
         distanceSlider[i].setVisible(false);
 
         LFO_freqSlider[i].setVisible(false);
+        LFO_amtSlider[i].setVisible(false);
+
+        staticAzimuthLFOButton[i].setVisible(false);
+
     }
     
     int itemIndex = oscMenu.getSelectedItemIndex();
@@ -183,5 +223,32 @@ void BinauralSynthesizerAudioProcessorEditor::comboBoxChanged(juce::ComboBox* co
     elevationSlider[itemIndex].setVisible(true);
     distanceSlider[itemIndex].setVisible(true);
     LFO_freqSlider[itemIndex].setVisible(true);
+    staticAzimuthLFOButton[itemIndex].getToggleState() == true ? LFO_amtSlider[itemIndex].setVisible(true) : LFO_amtSlider[itemIndex].setVisible(false);
+    staticAzimuthLFOButton[itemIndex].setVisible(true);
 
+
+}
+
+
+void BinauralSynthesizerAudioProcessorEditor::buttonStateChanged(juce::Button* button)
+{
+
+}
+
+void BinauralSynthesizerAudioProcessorEditor::buttonClicked(juce::Button* button)
+{
+    for (int i = 0; i < 3; i++)
+    {
+        if (button == &staticAzimuthLFOButton[i] && staticAzimuthLFOButton[i].getToggleState() == true)
+        {
+            LFO_amtSlider[i].setVisible(true);
+            break;
+        }
+        else if (button == &staticAzimuthLFOButton[i] && staticAzimuthLFOButton[i].getToggleState() == false)
+        {
+            LFO_amtSlider[i].setValue(359);
+            LFO_amtSlider[i].setVisible(false);
+            break;
+        }
+    }
 }

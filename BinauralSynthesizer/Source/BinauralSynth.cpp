@@ -22,8 +22,8 @@ void BinauralSynthClass::prepareToPlay(double samplerate)
     for(int i = 0; i < 3; i++)
     {
     azimuthLFO[i].setRange(359.0f);
-    azimuthLFO[i].setOffset(-0.5f);
-    azimuthLFO[i].setShape(LFOClass::sawUp);
+    azimuthLFO[i].setOffset(100.0f);
+    azimuthLFO[i].setShape(LFOClass::sine);
     }
 
 
@@ -38,7 +38,13 @@ void BinauralSynthClass::processBlock(juce::AudioBuffer<float>& buffer, juce::Mi
     auto currentSample = 0;
     for (int i = 0; i < 3; i++)
     {
-        setAzimuth(static_cast<int>(azimuthLFO[i].process()), i);
+        int LFOOutput = static_cast<int>(azimuthLFO[i].process());        
+        if (LFOOutput > 179)
+            setAzimuth(-180 + (LFOOutput % 180), i);
+        else if (LFOOutput < -180)
+            setAzimuth(179 + (LFOOutput % -181), i);
+        else
+            setAzimuth(LFOOutput, i);
     }
     for (const auto midiMessage : midiMessages)
     {

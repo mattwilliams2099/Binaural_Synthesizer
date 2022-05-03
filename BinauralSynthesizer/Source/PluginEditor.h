@@ -11,13 +11,12 @@
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
 
-//==============================================================================
-/**
-*/
-
 typedef juce::AudioProcessorValueTreeState::SliderAttachment SliderAttachment;
+typedef juce::AudioProcessorValueTreeState::ButtonAttachment ButtonAttachment;
+
 class BinauralSynthesizerAudioProcessorEditor  : public juce::AudioProcessorEditor,
-                                                 public juce::ComboBox::Listener
+                                                 public juce::ComboBox::Listener,
+                                                 public juce::Button::Listener
 {
 public:
     BinauralSynthesizerAudioProcessorEditor (BinauralSynthesizerAudioProcessor&, juce::AudioProcessorValueTreeState&);
@@ -26,7 +25,10 @@ public:
     //==============================================================================
     void paint (juce::Graphics&) override;
     void resized() override;
-    void comboBoxChanged(juce::ComboBox* comboBox) override;
+    void comboBoxChanged (juce::ComboBox* comboBox) override;
+    void buttonStateChanged (juce::Button* button) override;
+    void buttonClicked(juce::Button* button) override;
+
 
 private:
     // This reference is provided as a quick way for your editor to
@@ -54,6 +56,8 @@ private:
     juce::Slider osc_mixSlider[3];
 
     juce::Slider LFO_freqSlider[3];
+    juce::Slider LFO_amtSlider[3];
+
 
     juce::Slider attackSlider;
     juce::Slider decaySlider;
@@ -63,6 +67,12 @@ private:
     juce::Slider filterCutoffSlider;
     juce::Slider filterResonanceSlider;
     juce::Slider filterEGAmtSlider;
+
+    juce::ToggleButton staticAzimuthLFOButton[3];
+
+    std::unique_ptr<ButtonAttachment> osc1_staticAzimuthLFOButtonAttachment;
+    std::unique_ptr<ButtonAttachment> osc2_staticAzimuthLFOButtonAttachment;
+    std::unique_ptr<ButtonAttachment> osc3_staticAzimuthLFOButtonAttachment;
 
     juce::ComboBox oscMenu;
 
@@ -105,6 +115,11 @@ private:
     std::unique_ptr<SliderAttachment> LFO1_freqSliderAttachment;
     std::unique_ptr<SliderAttachment> LFO2_freqSliderAttachment;
     std::unique_ptr<SliderAttachment> LFO3_freqSliderAttachment;
+
+    std::unique_ptr<SliderAttachment> LFO1_amtSliderAttachment;
+    std::unique_ptr<SliderAttachment> LFO2_amtSliderAttachment;
+    std::unique_ptr<SliderAttachment> LFO3_amtSliderAttachment;
+
 
     void setSlider(juce::Slider& slider, juce::Colour colour, juce::Slider::SliderStyle style);
 
