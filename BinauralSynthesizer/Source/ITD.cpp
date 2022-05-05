@@ -29,15 +29,15 @@ void ITDClass::setDelay()
     float delay_short = (distance_short / 340.29f) / samplePeriod;
     if (index < 1152)
     {
-        delayLine.setDelayLength(round(delay_short), 0);
-        delayLine.setDelayLength(round(delay_long), 1);
+        delayLine.setDelayLength(delay_short, 0);
+        delayLine.setDelayLength(delay_long, 1);
         distanceCoefficient[0] = pow((1 / distance_short), 2);
         distanceCoefficient[1] = pow((1 / distance_long), 2);
     }
     else
     {
-        delayLine.setDelayLength(round(delay_short), 1);
-        delayLine.setDelayLength(round(delay_long), 0);
+        delayLine.setDelayLength(delay_short, 1);
+        delayLine.setDelayLength(delay_long, 0);
         distanceCoefficient[0] = pow((1 / distance_long), 2);
         distanceCoefficient[1] = pow((1 / distance_short), 2);
     }

@@ -7,7 +7,7 @@ DelayLineClass::DelayLineClass()
 	clearDelayLine();
 }
 
-void DelayLineClass::setDelayLength(int delay, int channel)
+void DelayLineClass::setDelayLength(float delay, int channel)
 {
 	delayLength[channel] = delay;
 	readIndex[channel] = writeIndex[channel] - delayLength[channel];
@@ -32,10 +32,13 @@ void DelayLineClass::writeToBuffer(float sample, int channel)
 
 float DelayLineClass::readFromBuffer(int channel)
 {
-	float delayedSample = circBuffer[readIndex[channel]][channel];
+	int rIndexTemp = static_cast<int>(readIndex[channel]);
+	float delayedSample = linearInterpolate(circBuffer[rIndexTemp][channel], circBuffer[(rIndexTemp + 1) == BUFFER_LENGTH ? 0 : rIndexTemp + 1][channel], readIndex[channel]);
+
+	//float delayedSample = circBuffer[readIndex[channel]][channel];
 	readIndex[channel]++;
-	if (readIndex[channel] == BUFFER_LENGTH)
-		readIndex[channel] = 0;
+	if (readIndex[channel] >= BUFFER_LENGTH)
+		readIndex[channel] -= BUFFER_LENGTH;
 	return delayedSample;
 }
 
