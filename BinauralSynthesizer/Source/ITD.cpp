@@ -21,11 +21,10 @@ float ITDClass::process(float sample, int channel)
     return delayLine.delayProcess(sample, channel) * distanceCoefficient[channel];
 }
 
-
 void ITDClass::setDelay()
 {
-    float distance_long = sqrt(pow((distance * coordinatesDatabase[index][0]), 2) + pow ((distance * coordinatesDatabase[index][1]) + 0.075, 2) + pow ((distance * coordinatesDatabase[index][2]), 2));
-    float distance_short = sqrt(pow((distance * coordinatesDatabase[index][0]), 2) + pow((distance * coordinatesDatabase[index][1]) - 0.075, 2) + pow((distance * coordinatesDatabase[index][2]), 2));
+    float distance_long = sqrt(pow((distance * coordinatesDatabase[index][0]), 2) + pow ((distance * coordinatesDatabase[index][1]) + headWidth, 2) + pow ((distance * coordinatesDatabase[index][2]), 2));
+    float distance_short = sqrt(pow((distance * coordinatesDatabase[index][0]), 2) + pow((distance * coordinatesDatabase[index][1]) - headWidth, 2) + pow((distance * coordinatesDatabase[index][2]), 2));
     float delay_long = (distance_long / 340.29f) / samplePeriod;
     float delay_short = (distance_short / 340.29f) / samplePeriod;
     if (index < 1152)

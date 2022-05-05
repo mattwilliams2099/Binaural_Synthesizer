@@ -29,6 +29,21 @@ public:
     void setSampleRate(float newValue);
     void prepareToPlay();
 
+    void setHeadWidth(float newHeadwidth)
+    {
+        for (int i = 0; i < NUM_OSCILLATORS; i++)
+        {
+            binaural[i].setHeadWidth(newHeadwidth);
+        }
+    }
+
+    void setFilterRes(float newFilterResonances)
+    {
+        for (int i = 0; i < NUM_OSCILLATORS; i++)
+        {
+            binaural[i].setFilterRes(newFilterResonances);
+        }
+    }
 
     void setAzimuth(int newValue, int oscNumber)
     {

@@ -23,6 +23,7 @@ private:
     float distanceCoefficient[2];
     float sampleRate;
     float samplePeriod;
+    float headWidth = 0.075;
     void loadCoordinateDatabase();
     float coordinatesDatabase[2304][3];
     int index;
@@ -32,4 +33,5 @@ public:
     float process(float sample, int channel);
     void setIndex(int newIndex);
     void setDistance(float newDistance);
+    void setHeadwidth(float newHeadWidth) { headWidth = newHeadWidth; }
 };

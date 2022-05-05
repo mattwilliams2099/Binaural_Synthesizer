@@ -32,7 +32,6 @@ public:
 private:
     float wavetable [WAVETABLE_LENGTH];
     float linearInterpolate();
-    void invert();
     int LFOwave = 0;
     float index = 0;
     float indexIncrement = 0;

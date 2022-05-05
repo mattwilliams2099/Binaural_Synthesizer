@@ -15,6 +15,13 @@ void DelayLineClass::setDelayLength(int delay, int channel)
 		readIndex[channel] += BUFFER_LENGTH;
 }
 
+float linearInterpolate(float lowerBound, float upperBound, float fraction)
+{
+	int intFraction = fraction;
+	float frac = fraction - intFraction;
+	return ((1 - frac) * lowerBound) + (frac * upperBound);
+}
+
 void DelayLineClass::writeToBuffer(float sample, int channel)
 {
 	circBuffer[writeIndex[channel]][channel] = sample;

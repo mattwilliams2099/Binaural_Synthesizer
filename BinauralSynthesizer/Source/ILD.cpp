@@ -29,6 +29,15 @@ float ILDClass::process(float sample, int channel)
     return(output);
 }
 
+
+void ILDClass::setFilterRes(float newFilterResonances)
+{
+    bandPassFilter[0].setBandPassCo(3.0f, 0.5f * newFilterResonances);
+    bandPassFilter[1].setBandPassCo(700.0f, 1.5f * newFilterResonances);
+    bandPassFilter[2].setBandPassCo(4000.0f, 3.0f * newFilterResonances);
+    bandPassFilter[3].setBandPassCo(13500.0f, 3.0f * newFilterResonances);
+}
+
 void ILDClass::loadAmplitudeDatabase()
 {
     std::ifstream amplitudesFile[8]; ("C:/Users/Matthew Williams/Documents/JUCE Plugin Dev/BinauralSynthesizer/BinauralSynthesizer/Source/subBandAmplitudes_left.txt");

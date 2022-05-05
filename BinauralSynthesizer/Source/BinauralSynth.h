@@ -20,68 +20,25 @@ public:
     BinauralSynthClass() = default;
     void processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages);
     void prepareToPlay(double samplerate);
-
-    void setAzimuth(int newValue, int oscNumber)
-    {
-        voices.setAzimuth(newValue, oscNumber);
-    }
-
-    void setLFOOffset(int newValue, int oscNumber)
-    {
-        azimuthLFO[oscNumber].setOffset(newValue);
-
-    }
-    void setElevation(int newValue, int oscNumber)
-    {
-        voices.setElevation(newValue, oscNumber);
-    }
-
-    void setDistance(float newValue, int oscNumber)
-    {
-        voices.setDistance(newValue, oscNumber);
-    }
-
-    void setOscShape(int newValue, int oscNumber)
-    {
-        //for(VoiceClass voice : voices)
-        voices.setOscShape(newValue, oscNumber);
-    }
-
-    void setOscMix(float newOscMixAmt, int oscNumber)
-    {
-        voices.setOscMix(newOscMixAmt, oscNumber);
-    }
-
-    void setOscFineFreq(float newValue, int oscNumber)
-    {
-        voices.setOscFine(newValue, oscNumber);
-    }
-
-    void setOscOctave (float newValue, int oscNumber)
-    {
-        voices.setOscOct (newValue, oscNumber);
-    }
-
-    void setLFOFreq(float newValue, int oscNumber)
-    {
-        azimuthLFO[oscNumber].setFrequency(newValue);
-    }
-
-    void setLFOAmt(float newValue, int oscNumber)
-    {
-        azimuthLFO[oscNumber].setRange(newValue);
-    }
-
-    void setDirection(bool isClockwise, int oscNumber)
-    {
-        clockwise[oscNumber] = isClockwise;
-    }
-
-    bool isClockwise(int oscNumber)
-    {
-        return clockwise[oscNumber];
-    }
-
+    void setHeadwidth (float newHeadwidth)              {   voices.setHeadWidth(newHeadwidth);              }
+    void setFilterRes (float newFilterResonances)       {   voices.setFilterRes(newFilterResonances);       }
+    void setAzimuth(int newValue, int oscNumber)        {   voices.setAzimuth(newValue, oscNumber);         }
+    void setLFOOffset(int newValue, int oscNumber)      {   azimuthLFO[oscNumber].setOffset(newValue);      }
+    void setElevation(int newValue, int oscNumber)      {   voices.setElevation(newValue, oscNumber);       }
+    void setDistance(float newValue, int oscNumber)     {   voices.setDistance(newValue, oscNumber);        }
+    void setOscShape(int newValue, int oscNumber)       {   voices.setOscShape(newValue, oscNumber);        }
+    void setOscMix(float newOscMixAmt, int oscNumber)   {   voices.setOscMix(newOscMixAmt, oscNumber);      }
+    void setOscFineFreq(float newValue, int oscNumber)  {   voices.setOscFine(newValue, oscNumber);         }
+    void setOscOctave (float newValue, int oscNumber)   {   voices.setOscOct (newValue, oscNumber);         }
+    void setLFOFreq(float newValue, int oscNumber)      {   azimuthLFO[oscNumber].setFrequency(newValue);   }
+    void setLFOAmt(float newValue, int oscNumber)       {   azimuthLFO[oscNumber].setRange(newValue);       }
+    void setDirection(bool isClockwise, int oscNumber)  {   clockwise[oscNumber] = isClockwise;             }
+    void setFilter (float newCutoff, float newResonance){   voices.setFilter (newCutoff, newResonance);     }
+    void setAmpAttack (int newValue)                    {   voices.setAmpAttack (newValue);                 }
+    void setAmpDecay (int newValue)                     {   voices.setAmpDecay (newValue);                  }
+    void setAmpSustain (float newValue)                 {   voices.setAmpSustain (newValue);                }
+    void setAmpRelease (int newValue)                   {   voices.setAmpRelease (newValue);                }
+    void setFilterEGAmt (float newEnvAmt)               {   voices.setFilterEGAmt(newEnvAmt);               }
     void setStaticLFO(bool isStatic, int oscNumber)
     {
         if (isStatic == true)
@@ -91,40 +48,5 @@ public:
         else
             azimuthLFO[oscNumber].setShape(LFOClass::sawUp);
     }
-
-    void setFilter (float newCutoff, float newResonance)
-    {
-        //for (VoiceClass voice : voices)
-        voices.setFilter (newCutoff, newResonance);
-    }
-
-    void setAmpAttack (int newValue)
-    {
-        //for (VoiceClass voice : voices)
-        voices.setAmpAttack (newValue);
-    }
-
-    void setAmpDecay (int newValue)
-    {
-        //for (VoiceClass voice : voices)
-        voices.setAmpDecay (newValue);
-    }
-
-    void setAmpSustain (float newValue)
-    {
-        //for (VoiceClass voice : voices)
-        voices.setAmpSustain (newValue);
-    }
-
-    void setAmpRelease (int newValue)
-    {
-        //for (VoiceClass voice : voices)
-        voices.setAmpRelease (newValue);
-    }
-
-    void setFilterEGAmt (float newEnvAmt)
-    {
-        voices.setFilterEGAmt(newEnvAmt);
-    }
-
+    bool isClockwise(int oscNumber)    {        return clockwise[oscNumber];    }
 };

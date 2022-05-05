@@ -21,6 +21,7 @@ private:
     float azimuth = 0.0f;
     float elevation = 0.0f;
     float distance = 1.0f;
+    float headWidth = 0.075;
     float sampleRate;
     int getCoordinates();
     int LFO = 0;
@@ -31,5 +32,6 @@ public:
     void setAzimuth(int newAzimuth);
     void setElevation(int newElevation);
     void setDistance(float newDistance);
-    void incrementLFO();
+    void setHeadWidth(float newHeadwidth) { ITD.setHeadwidth(newHeadwidth); }
+    void setFilterRes(float newFilterResonances) { ILD.setFilterRes(newFilterResonances); }
 };

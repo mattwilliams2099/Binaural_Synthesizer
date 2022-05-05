@@ -24,4 +24,5 @@ public:
     ILDClass(float samplerate = 44100.0f);
     float process(float sample, int channel);
     void setIndex(int newIndex) { amplitudeIndex = newIndex; }
+    void setFilterRes(float newFilterResonances);
 };
