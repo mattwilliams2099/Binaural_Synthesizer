@@ -37,6 +37,8 @@
             file="Source/SettingsRectangle.cpp"/>
       <FILE id="E08O1L" name="SettingsRectangle.h" compile="0" resource="0"
             file="Source/SettingsRectangle.h"/>
+      <FILE id="HjRHDb" name="lowBandAmplitudes_left.txt" compile="0" resource="1"
+            file="Source/lowBandAmplitudes_left.txt"/>
     </GROUP>
   </MAINGROUP>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>

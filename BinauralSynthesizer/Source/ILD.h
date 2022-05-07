@@ -12,6 +12,7 @@
 #include "Filter.h"
 #include <iostream>
 #include <fstream>
+#include <JuceHeader.h>
 class ILDClass
 {
 private:

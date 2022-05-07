@@ -20,6 +20,7 @@ private:
     ITDClass ITD;// { sampleRate };
     float azimuth = 0.0f;
     float elevation = 0.0f;
+
     float distance = 1.0f;
     float headWidth = 0.075;
     float sampleRate;

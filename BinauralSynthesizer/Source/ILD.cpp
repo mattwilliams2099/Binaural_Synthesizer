@@ -40,10 +40,26 @@ void ILDClass::setFilterRes(float newFilterResonances)
 
 void ILDClass::loadAmplitudeDatabase()
 {
+    juce::File resourceFile = juce::File::getCurrentWorkingDirectory().getParentDirectory().getParentDirectory().getChildFile("source\\lowBandAmplitudes_left.txt");
+    //juce::File resourceFile2 = resourceFile.getParentDirectory();
+    //juce::File resourceFile3 = resourceFile2.getParentDirectory();
+    //juce::File myFile = resourceFile3.getChildFile("source\\lowBandAmplitudes_left.txt");
+    //juce::File resourceFile = juce::File::getCurrentWorkingDirectory();
+    //juce::String filePath = resourceFile3.getFullPathName();
+
+
+    
+    
+    //.getChildFile("lowBandAmplitudes_left.txt");
+
+    if (!resourceFile.existsAsFile())
+    {
+        DBG("File doesn't exist ...");
+    }
     std::ifstream amplitudesFile[8]; ("C:/Users/Matthew Williams/Documents/JUCE Plugin Dev/BinauralSynthesizer/BinauralSynthesizer/Source/subBandAmplitudes_left.txt");
     amplitudesFile[0].open("C:/Users/Matthew Williams/Documents/JUCE Plugin Dev/BinauralSynthesizer/BinauralSynthesizer/Source/subBandAmplitudes_left.txt");
     amplitudesFile[1].open("C:/Users/Matthew Williams/Documents/JUCE Plugin Dev/BinauralSynthesizer/BinauralSynthesizer/Source/subBandAmplitudes_right.txt");
-    amplitudesFile[2].open("C:/Users/Matthew Williams/Documents/JUCE Plugin Dev/BinauralSynthesizer/BinauralSynthesizer/Source/lowBandAmplitudes_left.txt");
+    amplitudesFile[2].open("lowBandAmplitudes_left.txt");
     amplitudesFile[3].open("C:/Users/Matthew Williams/Documents/JUCE Plugin Dev/BinauralSynthesizer/BinauralSynthesizer/Source/lowBandAmplitudes_right.txt");
     amplitudesFile[4].open("C:/Users/Matthew Williams/Documents/JUCE Plugin Dev/BinauralSynthesizer/BinauralSynthesizer/Source/midBandAmplitudes_left.txt");
     amplitudesFile[5].open("C:/Users/Matthew Williams/Documents/JUCE Plugin Dev/BinauralSynthesizer/BinauralSynthesizer/Source/midBandAmplitudes_right.txt");

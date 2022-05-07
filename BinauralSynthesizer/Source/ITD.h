@@ -11,6 +11,7 @@
 #pragma once
 #define _USE_MATH_DEFINES
 #include "DelayLine.h"
+#include <JuceHeader.h>
 #include <cmath>
 #include <iostream>
 #include <fstream>
@@ -27,6 +28,8 @@ private:
     void loadCoordinateDatabase();
     float coordinatesDatabase[2304][3];
     int index;
+
+
 
 public:
     ITDClass(float sampleRate = 48000);
