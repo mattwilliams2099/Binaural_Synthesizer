@@ -93,6 +93,7 @@ void VoiceClass::setSampleRate(float newValue)
         for (int osc = 0; osc < NUM_OSCILLATORS; osc++)
         {
             oscillator[channel][osc].setSampleRate(sampleRate);
+            binaural[osc].setSampleRate(sampleRate);
         }
         envelope[channel].setSampleRate(sampleRate);
     }
@@ -100,6 +101,7 @@ void VoiceClass::setSampleRate(float newValue)
     //oscillator[1].setSampleRate(sampleRate);
     //oscillator[2].setSampleRate(sampleRate);
     LPF.setSampleRate(sampleRate);
+
 }
 
 

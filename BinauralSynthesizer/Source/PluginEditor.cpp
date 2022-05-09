@@ -76,10 +76,6 @@ BinauralSynthesizerAudioProcessorEditor::BinauralSynthesizerAudioProcessorEditor
     setLabel (settingsLabel[0], 11);
     setLabel (settingsLabel[1], 11);
 
-    setLabel(test, 15);
-    juce::String filePath = juce::File::getCurrentWorkingDirectory().getFullPathName();
-    test.setText(filePath, juce::NotificationType::dontSendNotification);
-
     oscTitle.setText            ("OSCILLATORS",     juce::NotificationType::dontSendNotification);
     filterTitle.setText         ("LOW PASS FILTER", juce::NotificationType::dontSendNotification);
     envelopeTitle.setText       ("ENVELOPE",        juce::NotificationType::dontSendNotification);
@@ -301,8 +297,6 @@ void BinauralSynthesizerAudioProcessorEditor::resized()
     settingsLabel[1].setBounds              (327,       110,        150,        20);
     headWidthSlider.setBounds               (327,       50,         sl_hi,      sl_wid);
     filterBankResSlider.setBounds           (327,       130,        sl_hi,      sl_wid);    
-    
-    test.setBounds(200, 300, 200, 200);
 
     settingsLabel[0].setAlwaysOnTop(true);
     settingsLabel[1].setAlwaysOnTop (true);

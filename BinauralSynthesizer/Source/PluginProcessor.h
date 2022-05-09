@@ -51,7 +51,7 @@ private:
     //==============================================================================
 
     juce::AudioProcessorValueTreeState parameters;
-    BinauralSynthClass synthesizer;
+    BinauralSynthClass synthesizer;// { static_cast<float>(getSampleRate()) };
 
     std::atomic<float>* osc1_azimuthParameter = nullptr;
     std::atomic<float>* osc1_elevationParameter = nullptr;

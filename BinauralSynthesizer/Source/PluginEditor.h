@@ -81,8 +81,6 @@ private:
     juce::Label oscLocSelectLabel;
     juce::Label settingsLabel[2];
 
-    juce::Label test;
-
     SettingsRectangle settingsRect;
 
     std::unique_ptr<ButtonAttachment> osc1_staticAzimuthLFOButtonAttachment;

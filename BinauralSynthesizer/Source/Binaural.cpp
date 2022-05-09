@@ -21,6 +21,13 @@ float BinauralClass::process(float sample, int channel)
     return ILD.process(delayedSample, channel);
 }
 
+void BinauralClass::setSampleRate(float newSampleRate)
+{
+    ILD.setSampleRate(newSampleRate);
+    ITD.setSampleRate(newSampleRate);
+}
+
+
 void BinauralClass::setAzimuth(int newAzimuth)
 {
     if (newAzimuth <= 0)

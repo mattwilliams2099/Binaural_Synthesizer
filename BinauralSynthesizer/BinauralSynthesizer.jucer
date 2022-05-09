@@ -5,6 +5,7 @@
               pluginCharacteristicsValue="pluginIsSynth,pluginProducesMidiOut,pluginWantsMidiIn">
   <MAINGROUP id="aw8imb" name="BinauralSynthesizer">
     <GROUP id="{1C7945E0-EE19-8CD9-0E8B-75D9FCADF587}" name="Source">
+      <FILE id="WTCiGF" name="test.txt" compile="0" resource="1" file="../../../../Desktop/test.txt"/>
       <FILE id="pDNcj4" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="Oo0RVC" name="PluginProcessor.h" compile="0" resource="0"

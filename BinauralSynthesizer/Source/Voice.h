@@ -123,7 +123,7 @@ private:
     OscillatorClass oscillator[2][NUM_OSCILLATORS]{ sampleRate };
     ADSRClass envelope[2]{ sampleRate };
     FilterClass LPF{ sampleRate };
-    BinauralClass binaural[NUM_OSCILLATORS];
+    BinauralClass binaural[NUM_OSCILLATORS]{ sampleRate };
     float midiNoteToHz(int midiNote);
     float sampleRate;
     float oscMix[NUM_OSCILLATORS];

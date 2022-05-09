@@ -21,9 +21,12 @@ private:
     float amplitudes[2304][4][2];
     int amplitudeIndex;
     float sampleRate;
+    float filterRes = 1.0f;
 public:
     ILDClass(float samplerate = 44100.0f);
     float process(float sample, int channel);
     void setIndex(int newIndex) { amplitudeIndex = newIndex; }
     void setFilterRes(float newFilterResonances);
+    void setSampleRate(float newSampleRate);
+    juce::String test;
 };

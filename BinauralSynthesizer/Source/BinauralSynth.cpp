@@ -17,16 +17,6 @@ BinauralSynthClass::BinauralSynthClass(float samplerate) : sampleRate(samplerate
 
 void BinauralSynthClass::prepareToPlay(double samplerate)
 {
-    //for (VoiceClass voice : voices)
-    
-    for(int i = 0; i < 3; i++)
-    {
-    azimuthLFO[i].setRange(359.0f);
-    azimuthLFO[i].setOffset(100.0f);
-    azimuthLFO[i].setShape(LFOClass::sine);
-    }
-
-
     voices.setSampleRate(static_cast<float>(samplerate));
     voices.prepareToPlay();
     //}

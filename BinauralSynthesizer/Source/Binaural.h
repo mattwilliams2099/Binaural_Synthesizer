@@ -35,4 +35,5 @@ public:
     void setDistance(float newDistance);
     void setHeadWidth(float newHeadwidth) { ITD.setHeadwidth(newHeadwidth); }
     void setFilterRes(float newFilterResonances) { ILD.setFilterRes(newFilterResonances); }
+    void setSampleRate(float newSampleRate);
 };

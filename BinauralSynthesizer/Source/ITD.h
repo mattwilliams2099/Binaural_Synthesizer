@@ -37,4 +37,5 @@ public:
     void setIndex(int newIndex);
     void setDistance(float newDistance);
     void setHeadwidth(float newHeadWidth) { headWidth = newHeadWidth; }
+    void setSampleRate(float newSampleRate) { sampleRate = newSampleRate;     samplePeriod = 1.0f / sampleRate; }
 };

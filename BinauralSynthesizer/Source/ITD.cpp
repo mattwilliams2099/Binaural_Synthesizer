@@ -46,12 +46,18 @@ void ITDClass::setDelay()
 void ITDClass::loadCoordinateDatabase()
 {
     std::ifstream coordinatesFile[3];
-    coordinatesFile[0].open("C:/Users/Matthew Williams/Documents/JUCE Plugin Dev/BinauralSynthesizer/BinauralSynthesizer/Source/x_coordinates.txt");
-    coordinatesFile[1].open("C:/Users/Matthew Williams/Documents/JUCE Plugin Dev/BinauralSynthesizer/BinauralSynthesizer/Source/y_coordinates.txt");
-    coordinatesFile[2].open("C:/Users/Matthew Williams/Documents/JUCE Plugin Dev/BinauralSynthesizer/BinauralSynthesizer/Source/z_coordinates.txt");
+
+    std::string loc[3];
+    loc[0] = juce::File::getSpecialLocation(juce::File::SpecialLocationType::userDesktopDirectory).getChildFile("Binaural_Synthesizer_Resources/x_coordinates.txt").getFullPathName().toStdString();
+    loc[1] = juce::File::getSpecialLocation(juce::File::SpecialLocationType::userDesktopDirectory).getChildFile("Binaural_Synthesizer_Resources/y_coordinates.txt").getFullPathName().toStdString();
+    loc[2] = juce::File::getSpecialLocation(juce::File::SpecialLocationType::userDesktopDirectory).getChildFile("Binaural_Synthesizer_Resources/z_coordinates.txt").getFullPathName().toStdString();
+    //coordinatesFile[0].open("C:/Users/Matthew Williams/Documents/JUCE Plugin Dev/BinauralSynthesizer/BinauralSynthesizer/Source/x_coordinates.txt");
+    //coordinatesFile[1].open("C:/Users/Matthew Williams/Documents/JUCE Plugin Dev/BinauralSynthesizer/BinauralSynthesizer/Source/y_coordinates.txt");
+    //coordinatesFile[2].open("C:/Users/Matthew Williams/Documents/JUCE Plugin Dev/BinauralSynthesizer/BinauralSynthesizer/Source/z_coordinates.txt");
 
     for (int i = 0; i < 3; i++)
     {
+        coordinatesFile[i].open(loc[i]);
         int n = 0;
         if (coordinatesFile[i].is_open())
         {
