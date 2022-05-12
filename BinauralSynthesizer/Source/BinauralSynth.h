@@ -39,6 +39,7 @@ public:
     void setAmpSustain (float newValue)                 {   voices.setAmpSustain (newValue);                }
     void setAmpRelease (int newValue)                   {   voices.setAmpRelease (newValue);                }
     void setFilterEGAmt (float newEnvAmt)               {   voices.setFilterEGAmt(newEnvAmt);               }
+    void setOneLocation(bool isOneLocation)             {   voices.setOneLocation(isOneLocation);           }
     void setStaticLFO(bool isStatic, int oscNumber)
     {
         if (isStatic == true)

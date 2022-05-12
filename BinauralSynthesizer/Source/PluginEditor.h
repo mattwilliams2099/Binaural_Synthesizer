@@ -60,6 +60,7 @@ private:
     juce::Slider filterBankResSlider;
 
     juce::ToggleButton staticAzimuthLFOButton[3];
+    juce::ToggleButton oneLocationButton;
     juce::TextButton directionButton[3];
     juce::TextButton settingsButton;
     juce::ComboBox oscMenu;
@@ -89,6 +90,8 @@ private:
     std::unique_ptr<ButtonAttachment> osc1_directionButtonAttachment;
     std::unique_ptr<ButtonAttachment> osc2_directionButtonAttachment;
     std::unique_ptr<ButtonAttachment> osc3_directionButtonAttachment;
+    std::unique_ptr<ButtonAttachment> oneLocationButtonAttachment;
+
     std::unique_ptr<SliderAttachment> osc1_elevationSliderAttachment;
     std::unique_ptr<SliderAttachment> osc1_azimuthSliderAttachment;
     std::unique_ptr<SliderAttachment> osc1_distanceSliderAttachment;

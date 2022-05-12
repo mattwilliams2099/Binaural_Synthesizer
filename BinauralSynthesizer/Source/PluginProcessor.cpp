@@ -63,6 +63,8 @@ BinauralSynthesizerAudioProcessor::BinauralSynthesizerAudioProcessor()
                                 std::make_unique<juce::AudioParameterBool>("OSC1_DIR", "Osc 1 Direction", true),
                                 std::make_unique<juce::AudioParameterBool>("OSC2_DIR", "Osc 2 Direction", true),
                                 std::make_unique<juce::AudioParameterBool>("OSC3_DIR", "Osc 3 Direction", true),
+                                std::make_unique<juce::AudioParameterBool>("ONE_LOC", "One Location", false),
+
                            })
 #endif
 {
@@ -120,6 +122,9 @@ BinauralSynthesizerAudioProcessor::BinauralSynthesizerAudioProcessor()
 
     headWidthParameter = parameters.getRawParameterValue("WIDTH");
     filterBankResParameter = parameters.getRawParameterValue("BI_RES");
+
+    oneLocationParameter = parameters.getRawParameterValue("ONE_LOC");
+
 }
 
 BinauralSynthesizerAudioProcessor::~BinauralSynthesizerAudioProcessor()
@@ -236,6 +241,7 @@ void BinauralSynthesizerAudioProcessor::prepareToPlay (double sampleRate, int sa
     synthesizer.setStaticLFO    (*osc3_azimuthLockParameter, 2);
     synthesizer.setHeadwidth    (*headWidthParameter / 200);
     synthesizer.setFilterRes    (*filterBankResParameter);
+    synthesizer.setOneLocation  (*oneLocationParameter);
 
 }
 
@@ -334,6 +340,7 @@ void BinauralSynthesizerAudioProcessor::processBlock (juce::AudioBuffer<float>& 
     synthesizer.setStaticLFO    (*osc3_azimuthLockParameter, 2);
     synthesizer.setHeadwidth    (*headWidthParameter / 200);
     synthesizer.setFilterRes    (*filterBankResParameter);
+    synthesizer.setOneLocation  (*oneLocationParameter);
 
     synthesizer.processBlock(buffer, midiMessages);
 }

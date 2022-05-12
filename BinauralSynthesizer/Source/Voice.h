@@ -119,6 +119,11 @@ public:
         filterEGAmt = newEnvAmt;
     }
 
+    void setOneLocation(bool isOneLocation)
+    {
+        oneLocation = isOneLocation;
+    }
+
 private:
     OscillatorClass oscillator[2][NUM_OSCILLATORS]{ sampleRate };
     ADSRClass envelope[2]{ sampleRate };
@@ -130,5 +135,6 @@ private:
     float cutoff;
     float resonance;
     float filterEGAmt;
+    bool oneLocation = false;
     void applyFilterEnvelope(float envOutput);
 };

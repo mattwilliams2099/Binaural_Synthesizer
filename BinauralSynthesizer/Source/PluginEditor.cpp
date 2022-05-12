@@ -45,6 +45,13 @@ BinauralSynthesizerAudioProcessorEditor::BinauralSynthesizerAudioProcessorEditor
         setLabel(oscLabel[i]);
         setLabel(filterLabel[i]);
     }
+    addAndMakeVisible(oneLocationButton);
+    oneLocationButton.setButtonText("ONE LOCATION");
+    oneLocationButton.addListener(this);
+    oneLocationButton.setToggleState(false, juce::NotificationType::dontSendNotification);
+    oneLocationButton.setColour(juce::ToggleButton::textColourId, juce::Colours::grey);
+    oneLocationButton.setColour(juce::ToggleButton::tickColourId, juce::Colours::grey);
+    oneLocationButton.setColour(juce::ToggleButton::tickDisabledColourId, juce::Colours::grey);
 
     addAndMakeVisible (settingsButton);
     settingsButton.setButtonText ("SETTINGS");
@@ -167,7 +174,8 @@ BinauralSynthesizerAudioProcessorEditor::BinauralSynthesizerAudioProcessorEditor
     osc1_directionButtonAttachment = std::make_unique<ButtonAttachment> (valueTreeState, "OSC1_DIR",    directionButton[0]);
     osc2_directionButtonAttachment = std::make_unique<ButtonAttachment> (valueTreeState, "OSC1_DIR",    directionButton[1]);
     osc3_directionButtonAttachment = std::make_unique<ButtonAttachment> (valueTreeState, "OSC1_DIR",    directionButton[2]);
-    
+    oneLocationButtonAttachment = std::make_unique<ButtonAttachment>(valueTreeState, "ONE_LOC", oneLocationButton);
+
     filterCutoffSlider.setRange (20, 20000, 1);
     filterCutoffSlider.setSkewFactor (0.3);
     filterEGAmtSlider.setRange (20, 10000, 1);
@@ -234,7 +242,7 @@ void BinauralSynthesizerAudioProcessorEditor::resized()
         LFO_freqSlider[i].setBounds         (100,       row_2 + 10, sl_wid,     sl_hi - 10);
         LFO_amtSlider[i].setBounds          (135,       row_2 + 10, sl_wid,     sl_hi - 10);
         staticAzimuthLFOButton[i].setBounds (25,        430,        150,        18);
-        directionButton[i].setBounds        (20,        450,        150,        15);
+        directionButton[i].setBounds        (20,        470,        150,        15);
 
         if (i > 0)
         {
@@ -251,6 +259,7 @@ void BinauralSynthesizerAudioProcessorEditor::resized()
         oscLabel[i].setCentrePosition(0, 0);
         oscLabel[i].setTransform(juce::AffineTransform::rotation(3 * (3.1415926 / 2)));
     }
+    oneLocationButton.setBounds(25, 450, 150, 18);
 
     oscLabel[0].setCentrePosition(15, 66);
     oscLabel[1].setCentrePosition(15, 116);
@@ -417,5 +426,62 @@ void BinauralSynthesizerAudioProcessorEditor::buttonClicked (juce::Button* butto
         headWidthSlider.setVisible (true);
         settingsRect.setVisible (true);
         filterBankResSlider.setVisible (true);
+    }
+    else if (button == &oneLocationButton && oneLocationButton.getToggleState() == true)
+    {
+        elevationSlider[0].setVisible(true);
+        distanceSlider[0].setVisible(true);
+        LFO_freqSlider[0].setVisible(true);
+        staticAzimuthLFOButton[0].setVisible(true);
+        if (staticAzimuthLFOButton[0].getToggleState() == false)
+        {
+            LFO_amtSlider[0].setVisible(false);
+            azimuthSlider[0].setVisible(false);
+            directionButton[0].setVisible(true);
+        }
+        else if (staticAzimuthLFOButton[0].getToggleState() == true)
+        {
+            LFO_amtSlider[0].setVisible(true);
+            azimuthSlider[0].setVisible(true);
+            directionButton[0].setVisible(false);
+        }
+
+        oscMenu.setVisible(false);
+        for (int i = 1; i < 3; i++)
+        {
+            azimuthSlider[i].setVisible(false);
+            elevationSlider[i].setVisible(false);
+            distanceSlider[i].setVisible(false);
+            LFO_freqSlider[i].setVisible(false);
+            LFO_amtSlider[i].setVisible(false);
+            staticAzimuthLFOButton[i].setVisible(false);
+            directionButton[i].setVisible(false);
+        }
+    }
+
+    else if (button == &oneLocationButton && oneLocationButton.getToggleState() == false)
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            azimuthSlider[i].setVisible(false);
+            elevationSlider[i].setVisible(false);
+            distanceSlider[i].setVisible(false);
+            LFO_freqSlider[i].setVisible(false);
+            LFO_amtSlider[i].setVisible(false);
+            staticAzimuthLFOButton[i].setVisible(false);
+            directionButton[i].setVisible(false);
+        }
+        oscMenu.setVisible(true);
+
+        int itemIndex = oscMenu.getSelectedItemIndex();
+
+        azimuthSlider[itemIndex].setVisible(true);
+        elevationSlider[itemIndex].setVisible(true);
+        distanceSlider[itemIndex].setVisible(true);
+        LFO_freqSlider[itemIndex].setVisible(true);
+        staticAzimuthLFOButton[itemIndex].setVisible(true);
+        staticAzimuthLFOButton[itemIndex].getToggleState() == true ? LFO_amtSlider[itemIndex].setVisible(true) : LFO_amtSlider[itemIndex].setVisible(false);
+        staticAzimuthLFOButton[itemIndex].getToggleState() == true ? azimuthSlider[itemIndex].setVisible(true) : azimuthSlider[itemIndex].setVisible(false);
+        staticAzimuthLFOButton[itemIndex].getToggleState() == false ? directionButton[itemIndex].setVisible(true) : directionButton[itemIndex].setVisible(false);
     }
 }

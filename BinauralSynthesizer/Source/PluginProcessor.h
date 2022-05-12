@@ -95,6 +95,8 @@ private:
     std::atomic<float>* osc3_directionParameter = nullptr;
     std::atomic<float>* headWidthParameter = nullptr;
     std::atomic<float>* filterBankResParameter = nullptr;
+    std::atomic<float>* oneLocationParameter = nullptr;
+
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (BinauralSynthesizerAudioProcessor)
 };

@@ -21,14 +21,23 @@ float VoiceClass::voiceProcess(int channel)
     float envelopeOutput = envelope[channel].ADSRProcess();
     applyFilterEnvelope(envelopeOutput);
     float oscOutput = 0.0f;
-    for (int i = 0; i < NUM_OSCILLATORS; i++)
+    if (oneLocation == false)
     {
-        oscOutput += binaural[i].process(oscillator[channel][i].oscillatorProcess() * oscMix[i], channel);
+        for (int i = 0; i < NUM_OSCILLATORS; i++)
+        {
+            oscOutput += binaural[i].process(oscillator[channel][i].oscillatorProcess() * oscMix[i] * envelopeOutput, channel);
+        }
+    }
+    else 
+    {
+        for (int i = 0; i < NUM_OSCILLATORS; i++)
+        {
+            oscOutput += oscillator[channel][i].oscillatorProcess() * oscMix[i] * envelopeOutput;
+        }
+        oscOutput = binaural[0].process(oscOutput, channel);
     }
     float filterOutput = LPF.filterProcess((oscOutput), channel);
-    float ampOutput = filterOutput * envelopeOutput;
-    //float binauralOutput = binaural.process(ampOutput, channel);
-    return ampOutput;
+    return filterOutput;
 }
 
 void VoiceClass::applyFilterEnvelope(float envOutput)
